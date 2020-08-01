@@ -1,8 +1,9 @@
 === jQuery Migrate Helper ===
 Contributors: wordpressdotorg, Clorith
-Requires at least: 5.5
 Tested up to: 5.5
 Stable tag: 0.1.0
+License: GPLv2 or late
+Requires PHP: 5.6
 
 == Description ==
 
