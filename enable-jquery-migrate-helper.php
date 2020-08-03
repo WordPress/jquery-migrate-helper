@@ -1,13 +1,13 @@
 <?php
 /*
-Plugin Name: jQuery Migrate Helper
-Plugin URI: https://wordpress.org/plugins/jquery-migrate-helper
+Plugin Name: Enable jQuery Migrate Helper
+Plugin URI: https://wordpress.org/plugins/enable-jquery-migrate-helper
 Description: Enable the jQuery Migrate helper feature during a transitional phase
 Version: 0.1.0
 Author: Clorith
 Author URI: https://www.clorith.net
 License: GPLv2
-Text Domain: jquery-migrate-helper
+Text Domain: enable-enable-jquery-migrate-helper
 */
 
 class jQuery_Migrate_Helper {
@@ -67,14 +67,14 @@ class jQuery_Migrate_Helper {
 		?>
 
 		<div class="notice notice-error" id="jquery-migrate-deprecation-notice" style="display:none;">
-			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Deprecations', 'jquery-migrate-helper' ); ?></h2>
+			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Deprecations', 'enable-jquery-migrate-helper' ); ?></h2>
 
 			<p>
-				<?php _e( 'A deprecated function means it will be removed in an upcoming update, and should be replaced with more modern code.', 'jquery-migrate-helper' ); ?>
+				<?php _e( 'A deprecated function means it will be removed in an upcoming update, and should be replaced with more modern code.', 'enable-jquery-migrate-helper' ); ?>
 			</p>
 
 			<p>
-				<?php _e( 'The following deprecation notices were detected on this page:', 'jquery-migrate-helper' ); ?>
+				<?php _e( 'The following deprecation notices were detected on this page:', 'enable-jquery-migrate-helper' ); ?>
 			</p>
 
 			<ol id="jquery-migrate-deprecation-list"></ol>
@@ -83,11 +83,11 @@ class jQuery_Migrate_Helper {
 				<?php
 				printf(
 				// translators: %s: `Console Log` link
-					__( 'To find out more about what plugin or theme is causing these issues, please consult your %s.', 'jquery-migrate-helper' ),
+					__( 'To find out more about what plugin or theme is causing these issues, please consult your %s.', 'enable-jquery-migrate-helper' ),
 					sprintf(
 						'<a href="%s">%s</a>',
-						_x( 'https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis', 'URL to article about debugging JavaScript', 'jquery-migrate-helper' ),
-						__( 'Console Log', 'jquery-migrate-helper' )
+						_x( 'https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis', 'URL to article about debugging JavaScript', 'enable-jquery-migrate-helper' ),
+						__( 'Console Log', 'enable-jquery-migrate-helper' )
 					)
 				);
 				?>
@@ -112,9 +112,9 @@ class jQuery_Migrate_Helper {
 		?>
 
 		<div class="notice notice-warning is-dismissible" id="jquery-migrate-notice">
-			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'jquery-migrate-helper' ); ?></h2>
+			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
 			<p>
-				<?php _e( 'You are currently using a migration helper for the jQuery script, please check if your theme and plugins still rely on this.' ,'jquery-migrate-helper' ); ?>
+				<?php _e( 'You are currently using a migration helper for the jQuery script, please check if your theme and plugins still rely on this.' ,'enable-jquery-migrate-helper' ); ?>
 			</p>
 		</div>
 		<script type="text/javascript">

@@ -1,4 +1,4 @@
-=== jQuery Migrate Helper ===
+=== Enable jQuery Migrate Helper ===
 Contributors: wordpressdotorg, Clorith
 Tested up to: 5.5
 Stable tag: 0.1.0
