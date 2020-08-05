@@ -7,7 +7,7 @@ Version: 0.1.0
 Author: Clorith
 Author URI: https://www.clorith.net
 License: GPLv2
-Text Domain: enable-enable-jquery-migrate-helper
+Text Domain: enable-jquery-migrate-helper
 */
 
 class jQuery_Migrate_Helper {
@@ -40,10 +40,12 @@ class jQuery_Migrate_Helper {
 		 * or plugins and get their code updated.
 		 */
 		wp_deregister_script( 'jquery-migrate' );
-		wp_enqueue_script( 'jquery-migrate', includes_url( '/js/jquery/jquery-migrate.js' ), array( 'jquery' ), '1.4.1', false );
+		wp_enqueue_script( 'jquery-migrate', plugins_url( 'js/jquery-migrate.js', __FILE__ ), array( 'jquery' ), '1.4.1-ejqmh', false );
 	}
 
-
+	/**
+	 * Enqueue the deprecation notice capture handler.
+	 */
 	public function enqueue_footer() {
 		wp_enqueue_script( 'jquery-migrate-deprecation-notices', plugins_url( 'js/deprecation-notice.js', __FILE__ ), array( 'jquery' ), false, true );
 	}
