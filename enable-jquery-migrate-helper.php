@@ -69,17 +69,22 @@ class jQuery_Migrate_Helper {
 		?>
 
 		<div class="notice notice-error" id="jquery-migrate-deprecation-notice" style="display:none;">
-			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Deprecations', 'enable-jquery-migrate-helper' ); ?></h2>
+			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Warnings encountered', 'enable-jquery-migrate-helper' ); ?></h2>
 
 			<p>
 				<?php _e( 'A deprecated function means it will be removed in an upcoming update, and should be replaced with more modern code.', 'enable-jquery-migrate-helper' ); ?>
 			</p>
 
 			<p>
-				<?php _e( 'The following deprecation notices were detected on this page:', 'enable-jquery-migrate-helper' ); ?>
+				<?php _e( 'The following notices were encountered on this page:', 'enable-jquery-migrate-helper' ); ?>
 			</p>
 
 			<ol id="jquery-migrate-deprecation-list"></ol>
+
+
+            <p>
+                <?php _e( 'Please make sure you are using the latest version for any of the plugins or themes listed above. If you are, you should consider reaching out to their respective developers for an update.' ); ?>
+            </p>
 		</div>
 
 		<?php
