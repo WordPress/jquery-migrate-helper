@@ -101,7 +101,6 @@ class jQuery_Migrate_Helper {
 		$message_dismissed = get_option( '_jquery_migrate_dismissed_notice', false);
 
 		$recurrence = 2 * WEEK_IN_SECONDS;
-		$recurrence = 5;
 
 		/*
 		 * If the message has been dismissed, and it has been less than two weeks since it was seen,
