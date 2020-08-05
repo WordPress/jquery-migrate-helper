@@ -80,20 +80,6 @@ class jQuery_Migrate_Helper {
 			</p>
 
 			<ol id="jquery-migrate-deprecation-list"></ol>
-
-			<p>
-				<?php
-				printf(
-				// translators: %s: `Console Log` link
-					__( 'To find out more about what plugin or theme is causing these issues, please consult your %s.', 'enable-jquery-migrate-helper' ),
-					sprintf(
-						'<a href="%s">%s</a>',
-						_x( 'https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis', 'URL to article about debugging JavaScript', 'enable-jquery-migrate-helper' ),
-						__( 'Console Log', 'enable-jquery-migrate-helper' )
-					)
-				);
-				?>
-			</p>
 		</div>
 
 		<?php
@@ -117,6 +103,24 @@ class jQuery_Migrate_Helper {
 			<p>
 				<?php _e( 'You are currently using a migration helper for the jQuery script, please check if your theme and plugins still rely on this.' ,'enable-jquery-migrate-helper' ); ?>
 			</p>
+
+            <p>
+                <?php _e( 'While browsing in the backend, you will be shown a notice if any warnings are detected. ', 'enable-jquery-migrate-helper' ); ?>
+            </p>
+
+            <p>
+				<?php
+				printf(
+				// translators: %s: `Console Log` link
+					__( 'To find out more about what plugin or theme is causing issues for the public part of yoru site, please consult your %s.', 'enable-jquery-migrate-helper' ),
+					sprintf(
+						'<a href="%s">%s</a>',
+						_x( 'https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis', 'URL to article about debugging JavaScript', 'enable-jquery-migrate-helper' ),
+						__( 'Console Log', 'enable-jquery-migrate-helper' )
+					)
+				);
+				?>
+            </p>
 		</div>
 		<script type="text/javascript">
 			jQuery( 'body' ).on( 'click', '.notice-dismiss', function() {
