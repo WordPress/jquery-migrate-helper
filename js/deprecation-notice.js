@@ -1,49 +1,63 @@
+/**
+ * Show all jQuery Migrate warnings in the UI.
+ */
 jQuery( document ).ready( function( $ ) {
+	const notice   = $( '.notice.jquery-migrate-deprecation-notice' );
+	const warnings = jQuery.migrateWarnings;
+
+	/**
+	 * Filter the trace, return the first URI that is to a plugin or theme script.
+	 */
 	function getPluginSlugFromTrace( trace ) {
-		let traceLines = trace.split( "\n" ),
-			regexSearch,
-			matches = null;
+		let traceLines = trace.split( '\n' ),
+			match = null;
 
 		// Loop over each line in the stack trace
 		traceLines.forEach( function( line ) {
-			/*
-			 * The first few lines are going to be the jquery-migrate script, first instance
-			 * that is not one of them is probably a valid plugin or theme.
-			 *
-			 * If it's not the jquery-migrate script, identified by the version strings custom
-			 * addition by this plugin, do a regex match for a plugin or theme slug.
-			 *
-			 * If no regex match is made, it's likely a section of code triggered by something
-			 * else, so keep moving down the stack to find one.
-			 */
-			if ( -1 === line.indexOf( 'ejqmh' ) ) {
-				regexSearch = line.match( /\/(plugins|themes)\/(.+?)\//gm );
+			if ( ! line ) {
+				return;
+			}
 
-				if ( regexSearch ) {
-					matches = regexSearch[0];
-					return true;
-				}
+			// Remove cache-busting.
+			line = line.split( '?' )[0];
+
+			// The first few lines are going to be references to the jquery-migrate script.
+			// The first instance that is not one of them is probably a valid plugin or theme.
+			if (
+				! match &&
+				line.indexOf( '/jquery-migrate-helper/js' ) === -1 &&
+				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 )
+			) {
+				match = line.replace( /.*?http/, 'http' );
 			}
 		} );
 
 		// If the stack trace did not contain a matching plugin or theme, just return a null value.
-		return matches;
+		return match;
 	}
 
-	if ( jQuery.migrateWarnings.length >= 1 ) {
-		$( '#jquery-migrate-deprecation-notice' ).show();
+	if ( notice.length && warnings.length ) {
+		const list = notice.find( '.jquery-migrate-deprecation-list' );
 
-		jQuery.migrateWarnings.forEach( function( entry ) {
-			let entryCause = getPluginSlugFromTrace( entry.trace );
-			let entryMessage = '<li>';
+		notice.show();
 
-			if ( entryCause ) {
-				entryMessage = entryMessage + entryCause + ': ';
-			}
+		warnings.forEach( function( entry ) {
+			const trace = getPluginSlugFromTrace( entry.trace );
+			let message = trace ? trace + ': ' : '';
 
-			entryMessage = entryMessage + entry.warning + '</li>';
-
-			$( '#jquery-migrate-deprecation-list' ).append( entryMessage );
+			message += entry.warning;
+			list.append( $( '<li></li>' ).text( message ) );
 		} );
 	}
+
+	// Add handler for dismissing of the dashboard notice.
+	$( document ).on( 'click', '.jquery-migrate-dashboard-notice .notice-dismiss', function() {
+		$.post( {
+			url: window.ajaxurl,
+			data: {
+				action: 'jquery-migrate-dismiss-notice',
+				'dismiss-notice-nonce': $( '#jquery-migrate-notice-nonce' ).val(),
+			},
+		} );
+	} );
 } );
