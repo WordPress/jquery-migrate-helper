@@ -103,7 +103,7 @@ class jQuery_Migrate_Helper {
 
 			<ol class="jquery-migrate-deprecation-list"></ol>
 
-            <p><?php _e( 'Please make sure you are using the latest version for any of the plugins or themes listed above. If you are, you should consider reaching out to their respective developers for an update.' ); ?></p>
+			<p><?php _e( 'Please make sure you are using the latest version for any of the plugins or themes listed above. If you are, you should consider reaching out to their respective developers for an update.' ); ?></p>
 		</div>
 
 		<?php
@@ -129,7 +129,7 @@ class jQuery_Migrate_Helper {
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
 			<p><?php _e( 'You are currently using a migration helper for jQuery script added by your theme and plugins. Please check if you still need this helper.' ,'enable-jquery-migrate-helper' ); ?></p>
 			<p><?php _e( 'While browsing in the backend, you will see warnings about deprecated scripts.', 'enable-jquery-migrate-helper' ); ?></p>
-            <p>
+			<p>
 				<?php
 
 				printf(
@@ -143,8 +143,8 @@ class jQuery_Migrate_Helper {
 				);
 
 				?>
-            </p>
-            <?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
+			</p>
+			<?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
 		</div>
 
 		<?php

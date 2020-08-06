@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Invalid request.' );
 }
 
-if ( ! class_exists( 'jQuery_Migrate_Helper' ) ) {
+if ( version_compare( $GLOBALS['wp_version'], '5.6-alpha', '<' ) && ! class_exists( 'jQuery_Migrate_Helper' ) ) {
 	include_once __DIR__ . '/class-jquery-migrate-helper.php';
 	add_action( 'plugins_loaded', array( 'jQuery_Migrate_Helper', 'init_actions' ) );
 }
