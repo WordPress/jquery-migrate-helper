@@ -38,15 +38,20 @@ jQuery.migrateReset = function() {
 
 function migrateWarn( msg) {
 	var console = window.console;
-	if ( !warnedAbout[ msg ] ) {
+	var error   = new Error();
+
+	// WP: Add all warnings to jQuery.migrateWarnings.
+	var tracedError = {
+		warning: msg,
+		trace: error.stack || error
+	};
+
+	jQuery.migrateWarnings.push( tracedError );
+	// WP: end.
+
+	if ( ! warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
 
-		var tracedError = {
-			'warning': msg,
-			'trace': Error().stack
-		};
-
-		jQuery.migrateWarnings.push( tracedError );
 		if ( console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
 			if ( jQuery.migrateTrace && console.trace ) {

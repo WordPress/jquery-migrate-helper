@@ -1,9 +1,11 @@
 === Enable jQuery Migrate Helper ===
-Contributors: wordpressdotorg, Clorith
+Contributors: wordpressdotorg, clorith, azaozz
+Requires at least: 5.5
 Tested up to: 5.5
-Stable tag: 0.1.0
-License: GPLv2 or late
+Stable tag: 1.0.0
 Requires PHP: 5.6
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
@@ -13,11 +15,11 @@ This plugin serves as a temporary solution, enabling the migration script for yo
 
 == Installation ==
 
-1. Upload to your plugins folder, usually `wp-content/plugins/`
+1. Upload to your plugins folder, usually `wp-content/plugins/`.
 2. Activate the plugin on the plugin screen.
 3. That's it! The plugin handles the rest automatically for you.
 
 == Changelog ==
 
-= v 0.1.0 =
-* Initial release
+= v 1.0.0 =
+* Initial release.
