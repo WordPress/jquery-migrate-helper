@@ -98,12 +98,16 @@ class jQuery_Migrate_Helper {
 
 		<div class="notice notice-error is-dismissible jquery-migrate-deprecation-notice hidden">
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Warnings encountered', 'enable-jquery-migrate-helper' ); ?></h2>
-			<p><?php _e( 'A deprecated function means it will be removed in an upcoming update, and should be replaced with more modern code.', 'enable-jquery-migrate-helper' ); ?></p>
-			<p><?php _e( 'The following notices were encountered on this page:', 'enable-jquery-migrate-helper' ); ?></p>
+			<p><?php _e( 'This page generated the following warnings:', 'enable-jquery-migrate-helper' ); ?></p>
 
 			<ol class="jquery-migrate-deprecation-list"></ol>
 
-			<p><?php _e( 'Please make sure you are using the latest version for any of the plugins or themes listed above. If you are, you should consider reaching out to their respective developers for an update.' ); ?></p>
+			<p><?php _e( 'Please make sure you\'re using the latest version of all of your plugins, and your theme. If you are, you might want to ask their developers for an update.', 'enable-jquery-migrate-helper' ); ?></p>
+            <p>
+				<?php _e( 'A script, a file, or some other piece of code is <strong>deprecated</strong> when its developers are in the process of replacing it with more modern code or removing it entirely from its environment.', 'enable-jquery-migrate-helper' ); ?>
+                <br>
+				<?php _e( 'If you get a warning, you should check the theme or plugin that generated it for an update—there will very likely be one you can install.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
 		</div>
 
 		<?php
@@ -127,23 +131,13 @@ class jQuery_Migrate_Helper {
 
 		<div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice">
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
-			<p><?php _e( 'You are currently using a migration helper for jQuery script added by your theme and plugins. Please check if you still need this helper.' ,'enable-jquery-migrate-helper' ); ?></p>
-			<p><?php _e( 'While browsing in the backend, you will see warnings about deprecated scripts.', 'enable-jquery-migrate-helper' ); ?></p>
+			<p><?php _e( 'Right now you are using a helper JavaScript that your theme or one or more of your plugins installed to help your site run some old code, but it\'s possible you no longer need it.' ,'enable-jquery-migrate-helper' ); ?></p>
+			<p><?php _e( 'To check, please deactivate the jQuery Migrate Helper plugin and then browse the WordPress dashboard. If you see errors or warnings about deprecated scripts, you should reactivate jQuery Migrate Helper.', 'enable-jquery-migrate-helper' ); ?></p>
 			<p>
-				<?php
-
-				printf(
-					// translators: %s: `Console Log` link
-					__( 'To find out more about what plugin or theme is causing issues for the public part of yoru site, please consult your %s.', 'enable-jquery-migrate-helper' ),
-					sprintf(
-						'<a href="%s">%s</a>',
-						_x( 'https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis', 'URL to article about debugging JavaScript', 'enable-jquery-migrate-helper' ),
-						__( 'Console Log', 'enable-jquery-migrate-helper' )
-					)
-				);
-
-				?>
-			</p>
+                <?php _e( 'A script, a file, or some other piece of code is <strong>deprecated</strong> when its developers are in the process of replacing it with more modern code or removing it entirely from its environment.', 'enable-jquery-migrate-helper' ); ?>
+                <br>
+                <?php _e( 'If you get a warning, you should check the theme or plugin that generated it for an update—there will very likely be one you can install.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
 			<?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
 		</div>
 
