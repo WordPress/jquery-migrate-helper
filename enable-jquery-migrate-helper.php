@@ -12,7 +12,7 @@ Author URI: https://wordpress.org
 Contributors: wordpressdotorg, clorith, azaozz
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: enable-jquery-migrate-helper
+Text Domain: jquery-migrate-helper
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
