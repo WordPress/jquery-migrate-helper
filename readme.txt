@@ -13,6 +13,14 @@ With the update to WordPress 5.5, a migration tool known as `jquery-migrate` wil
 
 This plugin serves as a temporary solution, enabling the migration script for your site to give your plugin and theme authors some more time to update, and test, their code.
 
+== Frequently Asked Questions ==
+
+= What does it mean that something is "deprecated" =
+A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.
+
+= How do I find and use the browser console =
+WordPress.org has an article about [using the browsers console log to diagnose JavaScript errors](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/).
+
 == Installation ==
 
 1. Upload to your plugins folder, usually `wp-content/plugins/`.
