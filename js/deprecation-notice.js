@@ -26,6 +26,7 @@ jQuery( document ).ready( function( $ ) {
 			if (
 				! match &&
 				line.indexOf( '/jquery-migrate-helper/js' ) === -1 &&
+				line.indexOf( '/enable-jquery-migrate-helper/js' ) === -1 &&
 				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 )
 			) {
 				match = line.replace( /.*?http/, 'http' );
