@@ -163,11 +163,11 @@ class jQuery_Migrate_Helper {
 	}
 
 	public static function admin_notices_dismiss() {
-		if ( empty( POST['dismiss-notice-nonce'] ) || ! current_user_can( 'manage_options' ) ) {
+		if ( empty( $_POST['dismiss-notice-nonce'] ) || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( POST['dismiss-notice-nonce'], 'jquery-migrate-notice' ) ) {
+		if ( ! wp_verify_nonce( $_POST['dismiss-notice-nonce'], 'jquery-migrate-notice' ) ) {
 			return;
 		}
 
