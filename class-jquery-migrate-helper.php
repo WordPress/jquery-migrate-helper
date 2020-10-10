@@ -27,7 +27,7 @@ class jQuery_Migrate_Helper {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_scripts' ), 100 );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts_frontend' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts_frontend' ), 100 );
 
 		add_action( 'admin_bar_menu', array( __CLASS__, 'admin_bar_menu' ), 100 );
 		add_action( 'init', array( __CLASS__, 'maybe_show_admin_notices' ) );
