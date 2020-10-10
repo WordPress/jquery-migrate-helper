@@ -284,11 +284,11 @@ class jQuery_Migrate_Helper {
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
 
             <p>
-                <?php _e( 'No deprecations have been logged on this site in a while, you may no longer need this plugins.', 'enable-jquery-migrate-helper' ); ?>
+                <?php _e( 'No deprecations have been logged on this site in a while, you may no longer need this plugin.', 'enable-jquery-migrate-helper' ); ?>
             </p>
 
             <p>
-                <?php _e( 'Please keep in mind that only notices on the public facing part of yoru site, or if you have disabled the display on the back end, will be logged and accounted for.', 'enable-jquery-migrate-helper' ); ?>
+                <?php _e( 'Please keep in mind that only notices on the public facing part of your site, or if you have disabled the display on the back end, will be logged and accounted for.', 'enable-jquery-migrate-helper' ); ?>
             </p>
 
             <p>
