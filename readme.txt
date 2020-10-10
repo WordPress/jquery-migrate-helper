@@ -29,6 +29,12 @@ WordPress.org has an article about [using the browsers console log to diagnose J
 
 == Changelog ==
 
+= v 1.1.0 =
+* Added option to dismiss deprecation notices in backend
+* Added logging of deprecation notices in the front end
+* Added admin bar entry to show when deprecations occur
+* Added view of logged deprecations
+
 = v 1.0.1 =
 * Fix one of the admin notices being non-dismissible.
 

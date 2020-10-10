@@ -25,10 +25,16 @@ class jQuery_Migrate_Helper {
 		// We need our own script for displaying warnings to run as late as possible.
 		// Print it separately after the footer scripts.
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_scripts' ), 100 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts_frontend' ) );
+
+		add_action( 'admin_bar_menu', array( __CLASS__, 'admin_bar_menu' ), 100 );
+		add_action( 'init', array( __CLASS__, 'maybe_show_admin_notices' ) );
 
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'wp_ajax_jquery-migrate-dismiss-notice', array( __CLASS__, 'admin_notices_dismiss' ) );
+		add_action( 'wp_ajax_jquery-migrate-log-notice', array( __CLASS__, 'log_migrate_notice' ) );
 	}
 
 	// Pre-register scripts on 'wp_default_scripts' action, they won't be overwritten by $wp_scripts->add().
@@ -76,6 +82,16 @@ class jQuery_Migrate_Helper {
 	 */
 	public static function register_scripts() {
 		wp_register_script( 'jquery-migrate-deprecation-notices', plugins_url( 'js/deprecation-notice.js', __FILE__ ), array( 'jquery' ), false, true );
+
+		wp_localize_script(
+			'jquery-migrate-deprecation-notices',
+			'JQMH',
+			array(
+				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+				'report_nonce' => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
+				'backend'      => is_admin(),
+			)
+		);
 	}
 
 	/**
@@ -84,6 +100,15 @@ class jQuery_Migrate_Helper {
 	public static function print_scripts() {
 		wp_print_scripts( 'jquery-migrate-deprecation-notices' );
 	}
+
+	public static function enqueue_scripts_frontend() {
+	    // Only load the asset for users who can act on them.
+	    if ( ! current_user_can( 'manage_options' ) ) {
+	        return;
+        }
+
+	    wp_enqueue_script( 'jquery-migrate-deprecation-notices' );
+    }
 
 	/**
 	 * HTML for jQuery Migrate deprecated notices.
@@ -94,9 +119,14 @@ class jQuery_Migrate_Helper {
 	 * @since 1.0.0
 	 */
 	public static function deprecated_scripts_notice() {
+		// If the message has been dismissed, and it has been less than two weeks since it was seen,
+		// then skip displaying the deprecation lister for now.
+		if ( ! self::show_deprecated_scripts_notice() ) {
+			return;
+		}
 		?>
 
-		<div class="notice notice-error is-dismissible jquery-migrate-deprecation-notice hidden">
+		<div class="notice notice-error is-dismissible jquery-migrate-dashboard-notice jquery-migrate-deprecation-notice <?php echo ( empty( $logs ) ? 'hidden' : '' ); ?>" data-notice-id="jquery-migrate-deprecation-list">
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Warnings encountered', 'enable-jquery-migrate-helper' ); ?></h2>
 			<p><?php _e( 'This page generated the following warnings:', 'enable-jquery-migrate-helper' ); ?></p>
 
@@ -106,28 +136,87 @@ class jQuery_Migrate_Helper {
 				<?php _e( 'Please make sure you are using the latest version of all of your plugins, and your theme.', 'enable-jquery-migrate-helper' ); ?>
 				<?php _e( 'If you are, you may want to ask the developers of the code mentioned in the warnings for an update.', 'enable-jquery-migrate-helper' ); ?>
 			</p>
+
+			<?php wp_nonce_field( 'jquery-migrate-deprecation-list', 'jquery-migrate-deprecation-list-nonce', false ); ?>
 		</div>
 
 		<?php
+	}
+
+	public static function show_deprecated_scripts_notice() {
+		return false === get_option( '_jquery_migrate_deprecations_dismissed_notice', false );
+	}
+
+	public static function previous_deprecation_notices() {
+		if ( ! isset( $_GET['show-jqmh-previous-notices'] ) ) {
+			return;
+		}
+
+		$logs = get_option( 'jqmh_logs', array() );
+        ?>
+		<div class="notice notice-error is-dismissible jquery-migrate-dashboard-notice jquery-migrate-previous-deprecations" data-notice-id="jquery-migrate-previous-deprecations">
+            <h2><?php _e( 'Previously logged deprecation notices', 'enable-jquery-migrate-helper' ); ?></h2>
+
+            <p>
+				<?php _e( 'The following are deprecations logged from the front-end of your site, or while the deprecation box was disabled.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
+
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <th><?php _ex( 'Time', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                    <th><?php _ex( 'Notice', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                    <th><?php _ex( 'Page', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <?php if ( empty( $logs ) ) : ?>
+                    <tr>
+                        <td colspan="3">
+                            <?php _e( 'No deprecations have been logged', 'enable-jquery-migrate-helper' ); ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+
+				<?php foreach ( $logs as $log ) : ?>
+
+                    <tr>
+                        <td><?php echo esc_html( $log['registered'] ); ?></td>
+                        <td><?php echo esc_html( $log['notice'] ); ?></td>
+                        <td><?php echo esc_html( $log['page'] ); ?></td>
+                    </tr>
+
+				<?php endforeach; ?>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th><?php _ex( 'Time', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                    <th><?php _ex( 'Notice', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                    <th><?php _ex( 'Page', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+                </tr>
+                </tfoot>
+            </table>
+
+			<?php wp_nonce_field( 'jquery-migrate-previous-deprecations', 'jquery-migrate-previous-deprecations-nonce', false ); ?>
+
+            <p></p>
+        </div>
+
+        <?php
 	}
 
 	/**
 	 * HTML for the Dashboard notice.
 	 */
 	public static function dashboard_notice() {
-		// Show again in two seeks if the user has dismissed this notice.
-		$is_dismissed = get_option( '_jquery_migrate_dismissed_notice', false );
-		$recurrence   = 2 * WEEK_IN_SECONDS;
-
-		// If the message has been dismissed, and it has been less than two weeks since it was seen,
-		// then skip showing the admin notice for now.
-		if ( false !== $is_dismissed && $is_dismissed > ( time() - $recurrence ) ) {
-			return;
-		}
-
+        if ( ! self::show_dashboard_notice() ) {
+            return;
+        }
 		?>
 
-		<div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice">
+		<div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice" data-notice-id="jquery-migrate-notice">
 			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
 			<p>
 				<?php _e( 'Right now you are using the Enable jQuery Migrate Helper plugin to enable support for old JavaScript code that uses deprecated functions in the jQuery JavaScript library.', 'enable-jquery-migrate-helper' ); ?>
@@ -149,6 +238,20 @@ class jQuery_Migrate_Helper {
 		<?php
 	}
 
+	public static function show_dashboard_notice() {
+		// Show again in two weeks if the user has dismissed this notice.
+		$is_dismissed = get_option( '_jquery_migrate_dismissed_notice', false );
+		$recurrence   = 2 * WEEK_IN_SECONDS;
+
+		// If the message has been dismissed, and it has been less than two weeks since it was seen,
+		// then skip showing the admin notice for now.
+		if ( false !== $is_dismissed && $is_dismissed > ( time() - $recurrence ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public static function admin_notices() {
 		// Show only to admins.
 		if ( ! current_user_can( 'update_plugins' ) ) {
@@ -157,20 +260,196 @@ class jQuery_Migrate_Helper {
 
 		if ( get_current_screen()->id === 'dashboard' ) {
 			self::dashboard_notice();
+
+			self::previous_deprecation_notices();
 		}
 
 		self::deprecated_scripts_notice();
 	}
 
+	public static function log_migrate_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			status_header( 403 );
+			die();
+		}
+
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'jquery-migrate-report-deprecation' ) ) {
+		    status_header( 406, 'Invalid nonce' );
+		    die();
+		}
+
+		$required_fields = array(
+            'notice',
+        );
+
+		foreach ( $required_fields as $required_field ) {
+		    if ( ! isset( $_POST[ $required_field ] ) ) {
+		        status_header( 400, 'Missing required fields' );
+		        die();
+		    }
+		}
+
+		$logs = get_option( 'jqmh_logs', array() );
+
+		$deprecation_data = array(
+			'notice' => wp_kses( $_POST['notice'], array() ),
+		);
+
+		/*
+		 * Creating a hash of the deprecation data lets us ensure it is only reported once, to avoid
+		 * filling the database with duplicates on busy sites.
+		 */
+        $deprecation_hash = md5( wp_json_encode( $deprecation_data ) );
+
+        if ( ! isset( $logs[ $deprecation_hash ] ) ) {
+            $logs[ $deprecation_hash ] = array_merge( array(
+	            'registered' => date_i18n( 'Y-m-d H:i:s' ),
+	            'page'       => ( isset( $_POST['url'] ) ? esc_url_raw( $_POST['url'] ) : '' ),
+	            'backend'    => isset( $_POST['backend'] ) && $_POST['backend'],
+            ), $deprecation_data );
+
+	        update_option( 'jqmh_logs', $logs );
+	        update_option( 'jqmh_last_log_time', date( "Y-m-d H:i:s" ) );
+        }
+
+        wp_send_json_success();
+	}
+
+	/**
+     * Check if any errors have been logged to the database.
+     *
+	 * @return int|null
+	 */
+	public static function logged_migration_notice_count() {
+	    if ( ! current_user_can( 'manage_options' ) ) {
+	        return null;
+	    }
+
+	    $logs = get_option( 'jqmh_logs', array() );
+
+	    return count( $logs );
+	}
+
+	/**
+	 * Handle ajax requests to dismiss a notice, and remember the dismissal.
+     *
+     * @return void
+	 */
 	public static function admin_notices_dismiss() {
 		if ( empty( $_POST['dismiss-notice-nonce'] ) || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['dismiss-notice-nonce'], 'jquery-migrate-notice' ) ) {
+		if ( ! wp_verify_nonce( $_POST['dismiss-notice-nonce'], $_POST['notice'] ) ) {
 			return;
 		}
 
-		update_option( '_jquery_migrate_dismissed_notice', time() );
+		switch( $_POST['notice'] ) {
+            case 'jquery-migrate-deprecation-list':
+	            update_option( '_jquery_migrate_deprecations_dismissed_notice', time() );
+	            break;
+
+            case 'jquery-migrate-previous-deprecations':
+                delete_option( 'jqmh_logs' );
+                break;
+
+            case 'jquery-migrate-notice':
+	            update_option( '_jquery_migrate_dismissed_notice', time() );
+	            break;
+		}
+	}
+
+	/**
+     * Add this plugin to the admin bar as a menu item.
+     *
+     * This entry allows users to re-surface previously hidden notices from the plugin,
+     * and also allows for alerting of issues detected in the frontend, where injecting
+     * any notice isn't as elegant.
+     *
+	 * @param $wp_menu
+	 */
+	public static function admin_bar_menu( $wp_menu ) {
+		// Show only to those with the right capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$deprecation_count = self::logged_migration_notice_count();
+
+		$wp_menu->add_menu(
+			array(
+				'id'    => 'enable-jquery-migrate-helper',
+				'title' => sprintf(
+                    // translators: %s: Parenthesis with issue count.
+					__( 'jQuery Migrate %s', 'enable-jquery-migrate-helper' ),
+                    sprintf(
+                        '<span class="count-wrapper" style="' . ( $deprecation_count > 0 ? '' : 'display:none;' ) . '">%s</span>',
+                        sprintf(
+                            // translators: 1: The amount of existing issues. 2: Issues discovered on the currently loaded page.
+                            __( '(Previously known: %1$d Discovered on this page: %2$s)', 'enable-jquery-migrate-helper' ),
+                            $deprecation_count,
+                            sprintf(
+                                '<span class="count">%d</span>',
+	                            0
+                            )
+                        )
+                    )
+                ),
+				'href'  => '#',
+			)
+		);
+
+		if ( ! self::show_deprecated_scripts_notice() ) {
+			$wp_menu->add_node(
+				array(
+					'id'     => 'enable-jquery-migrate-helper-show-deprecations',
+					'title'  => __( 'Display live deprecation notices', 'enable-jquery-migrate-helper' ),
+					'parent' => 'enable-jquery-migrate-helper',
+					'href'   => get_admin_url( null, '?show-jqmh-deprecations' ),
+				)
+			);
+		}
+
+		if ( ! self::show_dashboard_notice() ) {
+			$wp_menu->add_node(
+				array(
+					'id'     => 'enable-jquery-migrate-helper-show-notices',
+					'title'  => __( 'Display plugin information notice', 'enable-jquery-migrate-helper' ),
+					'parent' => 'enable-jquery-migrate-helper',
+					'href'   => get_admin_url( null, '?show-jqmh-notice' ),
+				)
+			);
+		}
+
+		$wp_menu->add_node(
+            array(
+                'id'     => 'enable-jquery-migrate-helper-show-previous-deprecations',
+                'title'  => __( 'Show a list of logged deprecations', 'enable-jquery-migrate-helper' ),
+                'parent' => 'enable-jquery-migrate-helper',
+                'href'   => get_admin_url( null, '?show-jqmh-previous-notices' ),
+            )
+        );
+	}
+
+	public static function maybe_show_admin_notices() {
+	    if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+	        return;
+	    }
+
+	    if ( isset( $_GET['show-jqmh-deprecations'] ) ) {
+		    delete_option( '_jquery_migrate_deprecations_dismissed_notice' );
+
+		    add_action( 'admin_notices', function() {
+			    ?>
+                <div class="notice notice-success is-dismissible">
+				    <?php _e( 'Live deprecation notices for jQuery Migrate have been enabled, they will show up in the admin interface when a notice is discovered.', 'enable-jquery-migrate-helper' ); ?>
+                </div>
+			    <?php
+		    } );
+	    }
+
+	    if ( isset( $_GET['show-jqmh-notice'] ) ) {
+		    delete_option( '_jquery_migrate_dismissed_notice' );
+	    }
 	}
 }
