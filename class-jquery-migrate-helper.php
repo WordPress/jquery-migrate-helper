@@ -252,6 +252,62 @@ class jQuery_Migrate_Helper {
 		return true;
 	}
 
+	/**
+	 * Display a dashboard notice if no deprecations have been logged in a while.
+     *
+     * This encourages users to remove the plugin when no longer needed, this will help gauge the jQuery
+     * migrations, and also remove the potential false-positive reports of jQuery issues caused by
+     * an unrelated core bug fixed in WordPress 5.5.1 that inflates the plugin numbers.
+	 */
+	public static function plugin_obsolete_message() {
+		$last_log   = get_option( 'jqmh_last_log_time', null );
+		$recurrence = 1 * WEEK_IN_SECONDS;
+
+		/*
+		 * If no log time is recorded, this is likely a recently updated plugin, so set the value to now,
+		 * to give a buffer, and avoid showing the notice when we have no data telling if its needed or not.
+		 */
+		if ( null === $last_log || self::logged_migration_notice_count() > 0 ) {
+			update_option( 'jqmh_last_log_time', time() );
+			return;
+		}
+
+		if ( $last_log > ( time() - $recurrence ) ) {
+		    return;
+		}
+		?>
+
+        <div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice" data-notice-id="jquery-migrate-no-deprecations-notice">
+			<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
+
+            <p>
+                <?php _e( 'No deprecations have been logged on this site in a while, you may no longer need this plugins.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
+
+            <p>
+                <?php _e( 'Please keep in mind that only notices on the public facing part of yoru site, or if you have disabled the display on the back end, will be logged and accounted for.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
+
+            <p>
+                <?php _e( 'This means you should still check that things work as expected after the plugin is disabled, and if you know there have been warnings in the admin pages, you may still need to reach out to the plugin or theme authors affected.', 'enable-jquery-migrate-helper' ); ?>
+            </p>
+
+            <?php if ( is_wp_version_compatible( '5.5.1' ) ) : ?>
+
+            <p>
+                <strong>
+                    <?php _e( 'You are using a WordPress version prior to 5.5.1, this plugin also helps with a bug found in WordPress 5.5.0, you should update to version 5.5.1, or later, before the plugin is deactivated.', 'enable-jquery-migarte-helper' ); ?>
+                </strong>
+            </p>
+
+            <?php endif; ?>
+
+	        <?php wp_nonce_field( 'jquery-migrate-no-deprecations-notice', 'jquery-migrate-no-deprecations-notice-nonce', false ); ?>
+        </div>
+
+        <?php
+	}
+
 	public static function admin_notices() {
 		// Show only to admins.
 		if ( ! current_user_can( 'update_plugins' ) ) {
@@ -262,6 +318,8 @@ class jQuery_Migrate_Helper {
 			self::dashboard_notice();
 
 			self::previous_deprecation_notices();
+
+			self::plugin_obsolete_message();
 		}
 
 		self::deprecated_scripts_notice();
@@ -309,7 +367,7 @@ class jQuery_Migrate_Helper {
             ), $deprecation_data );
 
 	        update_option( 'jqmh_logs', $logs );
-	        update_option( 'jqmh_last_log_time', date( "Y-m-d H:i:s" ) );
+	        update_option( 'jqmh_last_log_time', time() );
         }
 
         wp_send_json_success();
@@ -356,6 +414,10 @@ class jQuery_Migrate_Helper {
             case 'jquery-migrate-notice':
 	            update_option( '_jquery_migrate_dismissed_notice', time() );
 	            break;
+
+            case 'jquery-migrate-no-deprecations-notice':
+                update_option( 'jqmh_last_log_time', time() );
+                break;
 		}
 	}
 
