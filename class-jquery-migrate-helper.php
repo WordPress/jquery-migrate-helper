@@ -241,7 +241,7 @@ class jQuery_Migrate_Helper {
 	public static function show_dashboard_notice() {
 		// Show again in two weeks if the user has dismissed this notice.
 		$is_dismissed = get_option( '_jquery_migrate_dismissed_notice', false );
-		$recurrence   = 2 * WEEK_IN_SECONDS;
+		$recurrence   = 1 * WEEK_IN_SECONDS;
 
 		// If the message has been dismissed, and it has been less than two weeks since it was seen,
 		// then skip showing the admin notice for now.

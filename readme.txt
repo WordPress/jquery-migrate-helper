@@ -34,6 +34,7 @@ WordPress.org has an article about [using the browsers console log to diagnose J
 * Added logging of deprecation notices in the front end
 * Added admin bar entry to show when deprecations occur
 * Added view of logged deprecations
+* Changed the time interval between showing the dashboard nag from 2 weeks to 1 week, as WordPress 5.6 comes closer.
 
 = v 1.0.1 =
 * Fix one of the admin notices being non-dismissible.
