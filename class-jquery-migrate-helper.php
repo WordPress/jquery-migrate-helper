@@ -161,7 +161,7 @@ class jQuery_Migrate_Helper {
 				<?php _e( 'The following are deprecations logged from the front-end of your site, or while the deprecation box was disabled.', 'enable-jquery-migrate-helper' ); ?>
             </p>
 
-            <table class="widefat">
+            <table class="widefat striped">
                 <thead>
                 <tr>
                     <th><?php _ex( 'Time', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
