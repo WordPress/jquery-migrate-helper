@@ -90,6 +90,7 @@ class jQuery_Migrate_Helper {
 				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 				'report_nonce' => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
 				'backend'      => is_admin(),
+                'plugin_slug'  => dirname( plugin_basename( __FILE__ ) ),
 			)
 		);
 	}

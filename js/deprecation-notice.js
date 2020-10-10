@@ -27,8 +27,7 @@ jQuery( document ).ready( function( $ ) {
 			// The first instance that is not one of them is probably a valid plugin or theme.
 			if (
 				! match &&
-				line.indexOf( '/jquery-migrate-helper/js' ) === -1 &&
-				line.indexOf( '/enable-jquery-migrate-helper/js' ) === -1 &&
+				line.indexOf( '/' + JQMH.plugin_slug + '/js' ) === -1 &&
 				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 )
 			) {
 				match = line.replace( /.*?http/, 'http' );
