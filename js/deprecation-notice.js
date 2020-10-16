@@ -118,7 +118,7 @@ jQuery( document ).ready( function( $ ) {
 
 	if ( warnings.length ) {
 		warnings.forEach( function( entry ) {
-			const trace = getPluginSlugFromTrace( entry.trace );
+			const trace = getPluginSlugFromTrace( entry.trace ? entry.trace : "" );
 			let message = trace ? trace + ': ' : '';
 
 			message += entry.warning;
