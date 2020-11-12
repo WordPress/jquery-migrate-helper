@@ -3,7 +3,7 @@
  */
 jQuery( document ).ready( function( $ ) {
 	const notice       = $( '.notice.jquery-migrate-deprecation-notice' );
-	const warnings     = jQuery.migrateWarnings;
+	const warnings     = jQuery.migrateWarnings || [];
 	const adminbar     = $( '#wp-admin-bar-enable-jquery-migrate-helper' );
 	const countWrapper = $( '.count-wrapper', adminbar );
 
