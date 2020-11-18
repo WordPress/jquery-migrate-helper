@@ -48,6 +48,11 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 
+		// The live counter may be disabled if jQuery 3 is used during WordPress 5.6
+		if ( ! JQMH.capture_deprecations ) {
+			return;
+		}
+
 		if ( ! countWrapper.is( ':visible' ) ) {
 			countWrapper.show();
 
@@ -99,6 +104,10 @@ jQuery( document ).ready( function( $ ) {
 	function reportDeprecation( message ) {
 		// Do not write to the logfile if this is the backend, and the notices are written to the screen.
 		if ( JQMH.backend && notice.length ) {
+			return;
+		}
+
+		if ( ! JQMH.capture_deprecations ) {
 			return;
 		}
 

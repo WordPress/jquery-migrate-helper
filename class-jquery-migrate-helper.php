@@ -35,7 +35,116 @@ class jQuery_Migrate_Helper {
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'wp_ajax_jquery-migrate-dismiss-notice', array( __CLASS__, 'admin_notices_dismiss' ) );
 		add_action( 'wp_ajax_jquery-migrate-log-notice', array( __CLASS__, 'log_migrate_notice' ) );
+
+		add_action( 'wp_ajax_jquery-migrate-downgrade-version', array( __CLASS__, 'downgrade_jquery_version' ) );
+
+		add_action( 'wp_head', array( __CLASS__, 'fatal_error_handler' ) );
+		add_action( 'admin_head', array( __CLASS__, 'fatal_error_handler' ) );
+
+		add_filter( 'site_status_tests', array( __CLASS__, 'site_health_check' ) );
 	}
+
+	public static function site_health_check( $tests ) {
+	    $tests['direct']['enable-jquery-migrate-helper'] = array(
+            'label' => __( 'WordPress jQuery Version', 'enable-jquery-migrate-helper' ),
+            'test'  => array( __CLASS__, 'site_health_test' ),
+        );
+
+	    return $tests;
+    }
+
+    public static function site_health_test() {
+	    $result = array(
+		    'label'       => __( 'WordPress jQuery Version', 'enable-jquery-migrate-helper' ),
+		    'status'      => 'good',
+		    'badge'       => array(
+			    'label' => __( 'Performance' ),
+			    'color' => 'blue',
+		    ),
+		    'description' => sprintf(
+                '<p>%s</p>',
+			    __( 'Your site is using the latest jQuery version that comes with WordPress.', 'enable-jquery-migrate-helper' )
+            ),
+		    'actions'     => '',
+		    'test'        => 'enable-jquery-migrate-helper',
+	    );
+
+        $downgrade_state = get_option( '_jquery_migrate_downgrade_version', 'no' );
+
+        if ( 'no' !== $downgrade_state ) {
+	        $result['label']       = __( 'You are using a downgraded version of jQuery', 'enable-jquery-migrate-helper' );
+            $result['status']      = 'critical';
+            $result['description'] = sprintf(
+                '<p>%s</p>',
+	            __( 'Your site is using an older version of jQuery, version 1.12.4-wp, likely due to problems experienced with your plugins or themes after an update. Please reach out to the authors of your plugins and themes to ensure they are compatible with WordPress 5.6 or later.', 'enable-jquery-migrate-helper' )
+            );
+            $result['actions']     = sprintf(
+                '<a href="%s">%s</a>',
+	            esc_url( get_admin_url( null, '?jqmh-use-3' ) ),
+                __( 'Switch back to jQuery 3', 'enable-jquery-migrate-helper' )
+            );
+        }
+
+        return $result;
+    }
+
+	public static function downgrade_jquery_version() {
+		/*
+		 * Only allow the downgrade to be triggered automatically by site visitors if an admin hasn't
+		 * changed the option them selves, at which point only an admin should be able to set the version.
+		 */
+	    if ( 'manual' === get_option( '_jquery_migrate_downgrade_version', 'no' ) && ! current_user_can( 'manage_options' ) ) {
+	        return;
+        }
+
+	    // An array of functions that may trigger a jQuery Migrate downgrade.
+        $deprecated = array(
+            'live',
+        );
+
+	    preg_match( '/\)\.(?<function>.+?) is not a function/si', $_POST['msg'], $regex_match );
+	    $function = ( isset( $regex_match['function'] ) ? $regex_match['function'] : null );
+
+	    // If no function was detected, or it was not an acknowledged deprecated feature, do not downgrade.
+	    if ( null === $function || ! in_array( $function, $deprecated ) ) {
+	        return;
+        }
+
+	    update_option( '_jquery_migrate_downgrade_version', 'yes' );
+    }
+
+	/**
+	 * Add a fatal error handler for uncaught errors.
+     *
+     * This will look for deprecated jQuery functions, and send an AJAX call letting the plugin
+     * know that it should serve future requests as a downgraded version of jQuery.
+     *
+     * Vanilla JavaScript is used here to remove all dependencies on libraries, even though they
+     * all look very pretty, this ensures that code can run no matter the circumstance.
+	 */
+	public static function fatal_error_handler() {
+	    // If a downgraded request has already been performed, do not output the error handler.
+        if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
+            return;
+        }
+?>
+
+        <script type="text/javascript">
+			window.onerror = function( msg, url, line, col, error ) {
+                var xhr = new XMLHttpRequest();
+                xhr.open( 'POST', '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>' );
+                xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+                xhr.onload = function() {};
+
+                xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&msg=' + msg ) );
+
+				// Suppress error alerts in older browsers
+				return true;
+			}
+        </script>
+
+<?php
+    }
 
 	// Pre-register scripts on 'wp_default_scripts' action, they won't be overwritten by $wp_scripts->add().
 	private static function set_script( $scripts, $handle, $src, $deps = array(), $ver = false, $in_footer = false ) {
@@ -73,8 +182,15 @@ class jQuery_Migrate_Helper {
 	public static function replace_scripts( $scripts ) {
 		$assets_url = plugins_url( 'js/', __FILE__ );
 
-		self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-1.4.1-wp.js', array(), '1.4.1-wp' );
-		self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
+		if ( version_compare( $GLOBALS['wp_version'], '5.6-alpha', '<' ) || 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
+            self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-1.4.1-wp.js', array(), '1.4.1-wp' );
+            self::set_script( $scripts, 'jquery-core', $assets_url . 'jquery-1.12.4-wp.js', array(), '1.12.4-wp' );
+            self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
+	    } else {
+		    // This section can intentionally be removed if desired.
+			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.1-wp.js', array(), '3.3.1-wp' );
+			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
+		}
 	}
 
 	/**
@@ -87,10 +203,11 @@ class jQuery_Migrate_Helper {
 			'jquery-migrate-deprecation-notices',
 			'JQMH',
 			array(
-				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-				'report_nonce' => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
-				'backend'      => is_admin(),
-                'plugin_slug'  => dirname( plugin_basename( __FILE__ ) ),
+				'ajaxurl'              => admin_url( 'admin-ajax.php' ),
+				'report_nonce'         => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
+				'backend'              => is_admin(),
+                'plugin_slug'          => dirname( plugin_basename( __FILE__ ) ),
+                'capture_deprecations' => ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) )
 			)
 		);
 	}
@@ -486,6 +603,28 @@ class jQuery_Migrate_Helper {
 			);
 		}
 
+		if ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
+		    $wp_menu->add_node(
+                array(
+                    'id'     => 'enable-jquery-migreate-helper-upgrade-jquery',
+                    'title'  => __( 'Switch back to jQuery 3', 'enable-jquery-migrate-helper' ),
+                    'parent' => 'enable-jquery-migrate-helper',
+                    'href'   => get_admin_url( null, '?jqmh-use-3' ),
+                )
+            );
+		}
+
+		if ( 'yes' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
+			$wp_menu->add_node(
+				array(
+					'id'     => 'enable-jquery-migreate-helper-downgrade-jquery',
+					'title'  => __( 'Switch back to jQuery 1', 'enable-jquery-migrate-helper' ),
+					'parent' => 'enable-jquery-migrate-helper',
+					'href'   => get_admin_url( null, '?jqmh-use-1' ),
+				)
+			);
+		}
+
 		$wp_menu->add_node(
             array(
                 'id'     => 'enable-jquery-migrate-helper-show-previous-deprecations',
@@ -515,6 +654,37 @@ class jQuery_Migrate_Helper {
 
 	    if ( isset( $_GET['show-jqmh-notice'] ) ) {
 		    delete_option( '_jquery_migrate_dismissed_notice' );
+	    }
+
+	    if ( isset( $_GET['jqmh-use-3'] ) ) {
+		    update_option( '_jquery_migrate_downgrade_version', 'manual' );
+
+		    // Disable live deprecation notices by default.
+		    update_option( '_jquery_migrate_deprecations_dismissed_notice', time() );
+
+		    add_action( 'admin_notices', function() {
+			    ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>
+				        <?php _e( 'The jQuery version on your site has been reset to version 3, please check your pages. Automatic downgrades have also been disabled, you can revert to jQuery 1 through the admin bar menu.', 'enable-jquery-migrate-helper' ); ?>
+                    </p>
+                </div>
+			    <?php
+		    } );
+	    }
+
+	    if ( isset( $_GET['jqmh-use-1'] ) ) {
+		    update_option( '_jquery_migrate_downgrade_version', 'yes' );
+
+		    add_action( 'admin_notices', function() {
+			    ?>
+                <div class="notice notice-success is-dismissible">
+                    <p>
+				        <?php _e( 'The jQuery version on your site has been reset to version 1, please check your pages.', 'enable-jquery-migrate-helper' ); ?>
+                    </p>
+                </div>
+			    <?php
+		    } );
 	    }
 	}
 }
