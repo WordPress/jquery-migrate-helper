@@ -188,7 +188,7 @@ class jQuery_Migrate_Helper {
             self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
 	    } else {
 		    // This section can intentionally be removed if desired.
-			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.1-wp.js', array(), '3.3.1-wp' );
+			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
 			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
 		}
 	}
