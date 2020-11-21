@@ -7,19 +7,38 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+Get information about deprecated jQuery features in plugins or themes.
+
 == Description ==
 
 With the update to WordPress 5.5, a migration tool known as `jquery-migrate` will no longer be enabled by default. This may lead to unexpected behaviors in some themes or plugins who run older code.
 
 This plugin serves as a temporary solution, enabling the migration script for your site to give your plugin and theme authors some more time to update, and test, their code.
 
+---
+
+With the update to WordPress 5.6, the included version of jQuery is also upgraded. This means old code that previously caused warnings may now cause errors and stop working entirely.
+
+Some of these features no longer working will just stop working behind the scenes without any apparent problem.
+
+The plugin will let you downgrade to a previous version of jQuery for a period, but as a site administrator you are encouraged to get the underlying issue fixed.
+
 == Frequently Asked Questions ==
 
 = What does it mean that something is "deprecated" =
 A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.
 
+= What happens after WordPress 5.6 =
+With the release of WordPress 5.6, the jQuery version also gets updated. This means plugins or themes that caused deprecated warnings previously will now cause errors instead.
+The plugin will let you, temporarily, return to the previous version of jQuery if this happens (it will also try to do so automatically for website visitors the first time an error happens) allowing you to fix the code, or replace it.
+
 = How do I find and use the browser console =
 WordPress.org has an article about [using the browsers console log to diagnose JavaScript errors](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/).
+
+= There are a lot of deprecation warnings when using jQuery version 3 =
+As jQuery version 3 is very new to WordPress, this is expected.
+
+Deprecated notices means that there is a Migrate tool in place making sure these features still continue working while the related code is updated.
 
 == Installation ==
 

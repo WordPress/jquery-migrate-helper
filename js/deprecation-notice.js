@@ -7,10 +7,12 @@ jQuery( document ).ready( function( $ ) {
 	const adminbar     = $( '#wp-admin-bar-enable-jquery-migrate-helper' );
 	const countWrapper = $( '.count-wrapper', adminbar );
 
+	var previousDeprecations = [];
+
 	/**
 	 * Filter the trace, return the first URI that is to a plugin or theme script.
 	 */
-	function getPluginSlugFromTrace( trace ) {
+	function getSlugFromTrace( trace ) {
 		let traceLines = trace.split( '\n' ),
 			match = null;
 
@@ -28,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 			if (
 				! match &&
 				line.indexOf( '/' + JQMH.plugin_slug + '/js' ) === -1 &&
-				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 )
+				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 || line.indexOf( '/wp-admin/js/' ) > -1 )
 			) {
 				match = line.replace( /.*?http/, 'http' );
 			}
@@ -89,6 +91,15 @@ jQuery( document ).ready( function( $ ) {
 			return;
 		}
 
+		// Only list one case of the same error per file.
+		if ( JQMH.single_instance_log ) {
+			if ( previousDeprecations.indexOf( message ) > -1 ) {
+				return;
+			}
+
+			previousDeprecations.push( message );
+		}
+
 		if ( ! notice.is( ':visible' ) ) {
 			notice.show();
 		}
@@ -127,8 +138,13 @@ jQuery( document ).ready( function( $ ) {
 
 	if ( warnings.length ) {
 		warnings.forEach( function( entry ) {
-			const trace = getPluginSlugFromTrace( entry.trace ? entry.trace : "" );
+			const trace = getSlugFromTrace( entry.trace ? entry.trace : "" );
 			let message = trace ? trace + ': ' : '';
+
+			// Traces some times get a null value, skip these.
+			if ( '' === message ) {
+				return;
+			}
 
 			message += entry.warning;
 
