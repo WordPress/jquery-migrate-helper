@@ -440,6 +440,10 @@ class jQuery_Migrate_Helper {
                 </p>
 	        <?php endif; ?>
 
+            <p>
+                <a href="<?php echo esc_url( admin_url( 'tools.php?page=jqmh' ) ); ?>"><?php _e( 'Plugin settings', 'enable-jquery-migrate-helper' ); ?></a> | <a href="<?php echo esc_url( admin_url( 'tools.php?page=jqmh&tab=logs' ) ); ?>"><?php _e( 'Logged deprecations', 'enable-jquery-migrate-helper' ); ?></a>
+            </p>
+
 			<?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
         </div>
 
