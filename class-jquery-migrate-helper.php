@@ -146,6 +146,9 @@ class jQuery_Migrate_Helper {
 
 	    if ( 'yes' === $_POST['jquery-version'] ) {
 	        update_option( '_jquery_migrate_downgrade_version', 'yes' );
+
+	        // Reset the deprecation logging of modern jQuery (if set) when changing between versions
+		    update_option( '_jquery_migrate_modern_deprecations', 'no' );
         } else {
 		    update_option( '_jquery_migrate_downgrade_version', 'no' );
         }
@@ -154,6 +157,12 @@ class jQuery_Migrate_Helper {
 	        update_option( '_jquery_migrate_public_deprecation_logging', 'yes' );
         } else {
 	        update_option( '_jquery_migrate_public_deprecation_logging', 'no' );
+        }
+
+	    if ( isset( $_POST['modern-deprecations'] ) ) {
+	        update_option( '_jquery_migrate_modern_deprecations', 'yes' );
+        } else {
+	        update_option( '_jquery_migrate_modern_deprecations', 'no' );
         }
     }
 
@@ -330,9 +339,10 @@ class jQuery_Migrate_Helper {
 			self::set_script( $scripts, 'jquery-core', $assets_url . 'jquery-1.12.4-wp.js', array(), '1.12.4-wp' );
 			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
 		} else {
-			// This section can intentionally be removed if desired.
-			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
-			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
+			if ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ) {
+				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
+				self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
+			}
 		}
 	}
 
@@ -350,7 +360,7 @@ class jQuery_Migrate_Helper {
 				'report_nonce'         => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
 				'backend'              => is_admin(),
 				'plugin_slug'          => dirname( plugin_basename( __FILE__ ) ),
-				'capture_deprecations' => ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ), // Do not log deprecations to the database in jQuery 3.5
+				'capture_deprecations' => ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ), // Deprecation logging must be explicitly enabled for jQuery 3.5
                 'single_instance_log'  => ( 'no' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ), // Only show one instance of deprecations in jQuery 3.5
 			)
 		);

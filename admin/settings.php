@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $downgraded = get_option( '_jquery_migrate_downgrade_version', 'no' );
 $show_deprecations = jQuery_Migrate_Helper::show_deprecated_scripts_notice();
 $public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging', 'no' );
+$log_modern_deprecations = get_option( '_jquery_migrate_modern_deprecations', 'no' );
 ?>
 
 <h2>Settings</h2>
@@ -44,6 +45,20 @@ $public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging',
                 </label>
             </td>
         </tr>
+
+        <?php if ( 'no' === $downgraded && is_wp_version_compatible( '5.6-alpha' ) ) : ?>
+        <tr>
+            <th scope="row">
+				<?php _e( 'Capture modern deprecations', 'enable-jquery-migrate-helper' ); ?>
+            </th>
+            <td>
+                <label>
+                    <input name="modern-deprecations" type="checkbox" <?php checked( 'yes' === $log_modern_deprecations ); ?>>
+					<?php _e( 'Detect and log deprecations in the default WordPress version of jQuery', 'enable-jquery-migrate-helper' ); ?>
+                </label>
+            </td>
+        </tr>
+        <?php endif; ?>
 
         <tr>
             <th scope="row">
