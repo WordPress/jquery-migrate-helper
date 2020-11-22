@@ -55,7 +55,7 @@ $public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging',
                     <?php _e( 'Log deprecations caused by anonymous users browsing your website', 'enable-jquery-migrate-helper' ); ?>
                 </label>
                 <p class="description">
-                    <?php _e( 'Caution: This option may lead to more deprecations being discovered, but could also be used to increase your database size. Use sparingly and under supervision.', 'enable-jquery-migrate-helper' ); ?>
+                    <?php _e( 'Caution: This option may lead to more deprecations being discovered, but will also increase the amount of database entries. Use sparingly and under supervision.', 'enable-jquery-migrate-helper' ); ?>
                 </p>
             </td>
         </tr>
