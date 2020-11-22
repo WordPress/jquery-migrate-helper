@@ -46,7 +46,31 @@ class jQuery_Migrate_Helper {
 		add_action( 'admin_head', array( __CLASS__, 'fatal_error_handler' ) );
 
 		add_filter( 'site_status_tests', array( __CLASS__, 'site_health_check' ) );
+
+		// Set up our scheduled weekly notification.
+        if ( ! wp_next_scheduled( 'enable_jquery_migrate_helper_notification' ) && ! wp_installing() ) {
+            wp_schedule_event( time() + DAY_IN_SECONDS, 'weekly', 'enable_jquery_migrate_helper_notification' );
+        }
+        add_action( 'enable_jquery_migrate_helper_notification', array( __CLASS__, 'scheduled_event_handler' ) );
 	}
+
+	/**
+	 * Run the scheduled event ot send an email summary to the site admin.
+	 */
+	public static function scheduled_event_handler() {
+	    $recipient = get_bloginfo( 'admin_email' );
+	    $title = __( 'Weekly jQuery Migrate Status Update', 'enable-jquery-migrate-helper' );
+
+        ob_start();
+        include_once __DIR__ . '/templates/email/weekly.php';
+        $message = ob_get_clean();
+
+	    add_filter( 'wp_mail_content_type', function() {
+	        return 'text/html';
+        } );
+
+	    wp_mail( $recipient, $title, $message );
+    }
 
 	/**
 	 * Appends the count of migration notices to the `Tools` menu item.

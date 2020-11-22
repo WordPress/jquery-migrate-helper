@@ -1,0 +1,165 @@
+<?php
+/**
+ * Template for weekly scheduled email.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Invalid request.' );
+}
+
+if ( ! function_exists( 'get_plugins' ) ) {
+	require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
+}
+
+$plugins = array();
+
+foreach ( get_plugins() as $slug => $plugin ) {
+	$slug = explode( '/', $slug );
+	$plugins[ $slug[0] ] = $plugin;
+}
+
+$themes = wp_get_themes();
+
+$logs = get_option( 'jqmh_logs', array() );
+?>
+
+<p>
+	<?php _e( 'Greetings!', 'enable-jquery-migrate-helper' ); ?>
+</p>
+
+<p>
+	<?php _e( 'This is a weekly summary of the warnings still present on your site, relating to the jQuery library, which should be addressed as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
+</p>
+
+<?php if ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
+
+<p>
+	<strong>
+		 <?php _e( 'Your site is running a legacy version of jQuery, modern functionality is not available to your plugins, themes or WordPress it self.', 'enable-jquery-migrate-helper' ); ?>
+	</strong>
+</p>
+
+<?php endif; ?>
+
+<?php if ( jQuery_Migrate_Helper::logged_migration_notice_count() < 1 ) : ?>
+
+<p>
+	<?php _e( 'There have been no reported deprecations logged in the past week, maybe you no longer need this plugin?', 'enable-jquery-migrate-helper' ); ?>
+</p>
+
+<?php else : ?>
+
+<p>
+	<?php _e( 'The following are deprecations logged from the front-end of your site, or while live deprecation notices were disabled in the admin area.', 'enable-jquery-migrate-helper' ); ?>
+</p>
+
+<table style="background: #fff; border: 1px solid #ccd0d4;">
+	<thead>
+		<tr>
+			<th style="border-bottom: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Time', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-bottom: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Notice', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-bottom: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Plugin or theme', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-bottom: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'File location', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-bottom: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Triggered on page', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+		</tr>
+	</thead>
+
+	<tbody id="jqmh-logged-notices">
+	<?php if ( empty( $logs ) ) : ?>
+		<tr>
+			<td colspan="5">
+				<?php _e( 'No deprecations have been logged', 'enable-jquery-migrate-helper' ); ?>
+			</td>
+		</tr>
+	<?php endif; ?>
+
+	<?php
+	$odd = true;
+	foreach ( $logs as $log ) :
+
+		preg_match( '/\/plugins\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $plugin );
+		preg_match( '/\/themes\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $theme );
+
+		$notice = $log['notice'];
+		$source = __( 'Undetermined', 'enable-jquery-migrate-helper' );
+		$file   = __( 'Inline code, unknown file location', 'enable-jquery-migrate-helper' );
+
+		if ( ! empty( $plugin ) ) {
+			preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
+			$file = $file['path'];
+
+			$plugin_link = '#';
+
+			if ( isset( $plugins[ $plugin['slug'] ] ) ) {
+				$plugin_link = ( isset( $plugins[ $plugin['slug'] ]['PluginURI'] ) ? $plugins[ $plugin['slug'] ]['PluginURI'] : $plugins[ $plugin['slug'] ]['AuthorURI'] );
+			}
+
+			$notice = $plugin['notice'];
+			$source = sprintf(
+			// translators: 1: Linked name of the plugin throwing notices.
+				__( 'Plugin: %s', 'enable-jquery-migrate-helper' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $plugin_link ),
+					esc_html( ( isset( $plugins[ $plugin['slug'] ] ) ? $plugins[ $plugin['slug'] ]['Name'] : $plugin['slug'] ) )
+				)
+			);
+		} elseif ( ! empty( $theme ) ) {
+			preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
+			$file = $file['path'];
+
+			$theme_link = '#';
+
+			if ( isset( $themes[ $theme['slug'] ] ) ) {
+				$theme_link = $themes[ $theme['slug'] ]->get( 'ThemeURI' );
+			}
+
+			$notice = $theme['notice'];
+			$source = sprintf(
+			// translators: 1: Linked name of the theme throwing notices.
+				__( 'Theme: %s', 'enable-jquery-migrate-helper' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $theme_link ),
+					esc_html( ( isset( $themes[ $theme['slug'] ] ) ? $themes[ $theme['slug'] ]->get( 'Name' ) : $theme['slug'] ) )
+				)
+			);
+		}
+
+		?>
+
+		<tr style="<?php echo ( $odd ? 'background-color: #f9f9f9;' : '' ); ?>">
+			<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php echo esc_html( $log['registered'] ); ?></td>
+			<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php echo esc_html( $notice ); ?></td>
+			<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php echo $source; ?></td>
+			<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php echo esc_html( $file ); ?></td>
+			<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php echo esc_html( $log['page'] ); ?></td>
+		</tr>
+
+	<?php if ( $odd ) { $odd = false; } else { $odd = true; } ?>
+
+	<?php endforeach; ?>
+	</tbody>
+
+	<tfoot>
+		<tr>
+			<th style="border-top: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Time', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-top: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Notice', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-top: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Plugin or theme', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-top: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'File location', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+			<th style="border-top: 1px solid #ccd0d4; text-align: left; padding-top: 8px; padding-bottom: 8px; padding-left: 10px; padding-right: 10px;"><?php _ex( 'Page', 'Admin deprecation notices', 'enable-jquery-migrate-helper' ); ?></th>
+		</tr>
+	</tfoot>
+</table>
+
+<?php endif; ?>
+
+<p>
+	&nbsp;
+</p>
+
+<p>
+	<span style="font-style: italic;">
+		<?php _e( 'This email was automatically generated by the Enable jQuery Migrate Helper plugin', 'enable-jquery-migrate-helper' ); ?>
+	</span>
+</p>

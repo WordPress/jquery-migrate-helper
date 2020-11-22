@@ -8,14 +8,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! function_exists( 'get_plugins' ) ) {
-    require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
+	require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
 }
 
 $plugins = array();
 
 foreach ( get_plugins() as $slug => $plugin ) {
-    $slug = explode( '/', $slug );
-    $plugins[ $slug[0] ] = $plugin;
+	$slug = explode( '/', $slug );
+	$plugins[ $slug[0] ] = $plugin;
 }
 
 $themes = wp_get_themes();
@@ -49,7 +49,7 @@ $logs = get_option( 'jqmh_logs', array() );
     <tbody id="jqmh-logged-notices">
 	<?php if ( empty( $logs ) ) : ?>
         <tr>
-            <td colspan="3">
+            <td colspan="5">
 				<?php _e( 'No deprecations have been logged', 'enable-jquery-migrate-helper' ); ?>
             </td>
         </tr>
@@ -58,56 +58,56 @@ $logs = get_option( 'jqmh_logs', array() );
 	<?php
     foreach ( $logs as $log ) :
 
-        preg_match( '/\/plugins\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $plugin );
-        preg_match( '/\/themes\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $theme );
+		preg_match( '/\/plugins\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $plugin );
+		preg_match( '/\/themes\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $theme );
 
-        $notice = $log['notice'];
-        $source = __( 'Undetermined', 'enable-jquery-migrate-helper' );
-        $file   = __( 'Inline code, unknown file location', 'enable-jquery-migrate-helper' );
+		$notice = $log['notice'];
+		$source = __( 'Undetermined', 'enable-jquery-migrate-helper' );
+		$file   = __( 'Inline code, unknown file location', 'enable-jquery-migrate-helper' );
 
-        if ( ! empty( $plugin ) ) {
-            preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
-            $file = $file['path'];
+		if ( ! empty( $plugin ) ) {
+			preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
+			$file = $file['path'];
 
-            $plugin_link = '#';
+			$plugin_link = '#';
 
-            if ( isset( $plugins[ $plugin['slug'] ] ) ) {
-                $plugin_link = ( isset( $plugins[ $plugin['slug'] ]['PluginURI'] ) ? $plugins[ $plugin['slug'] ]['PluginURI'] : $plugins[ $plugin['slug'] ]['AuthorURI'] );
-            }
+			if ( isset( $plugins[ $plugin['slug'] ] ) ) {
+				$plugin_link = ( isset( $plugins[ $plugin['slug'] ]['PluginURI'] ) ? $plugins[ $plugin['slug'] ]['PluginURI'] : $plugins[ $plugin['slug'] ]['AuthorURI'] );
+			}
 
-            $notice = $plugin['notice'];
-            $source = sprintf(
-                // translators: 1: Linked name of the plugin throwing notices.
-                __( 'Plugin: %s', 'enable-jquery-migrate-helper' ),
-                sprintf(
-                    '<a href="%s">%s</a>',
-                    esc_url( $plugin_link ),
-                    esc_html( ( isset( $plugins[ $plugin['slug'] ] ) ? $plugins[ $plugin['slug'] ]['Name'] : $plugin['slug'] ) )
-                )
-            );
-        } elseif ( ! empty( $theme ) ) {
-	        preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
-	        $file = $file['path'];
+			$notice = $plugin['notice'];
+			$source = sprintf(
+			// translators: 1: Linked name of the plugin throwing notices.
+				__( 'Plugin: %s', 'enable-jquery-migrate-helper' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $plugin_link ),
+					esc_html( ( isset( $plugins[ $plugin['slug'] ] ) ? $plugins[ $plugin['slug'] ]['Name'] : $plugin['slug'] ) )
+				)
+			);
+		} elseif ( ! empty( $theme ) ) {
+			preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
+			$file = $file['path'];
 
-	        $theme_link = '#';
+			$theme_link = '#';
 
-	        if ( isset( $themes[ $theme['slug'] ] ) ) {
-	            $theme_link = $themes[ $theme['slug'] ]->get( 'ThemeURI' );
-            }
+			if ( isset( $themes[ $theme['slug'] ] ) ) {
+				$theme_link = $themes[ $theme['slug'] ]->get( 'ThemeURI' );
+			}
 
-	        $notice = $theme['notice'];
-	        $source = sprintf(
-	        // translators: 1: Linked name of the theme throwing notices.
-		        __( 'Theme: %s', 'enable-jquery-migrate-helper' ),
-		        sprintf(
-                    '<a href="%s">%s</a>',
-                    esc_url( $theme_link ),
-                    esc_html( ( isset( $themes[ $theme['slug'] ] ) ? $themes[ $theme['slug'] ]->get( 'Name' ) : $theme['slug'] ) )
-                )
-	        );
-        }
+			$notice = $theme['notice'];
+			$source = sprintf(
+			// translators: 1: Linked name of the theme throwing notices.
+				__( 'Theme: %s', 'enable-jquery-migrate-helper' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $theme_link ),
+					esc_html( ( isset( $themes[ $theme['slug'] ] ) ? $themes[ $theme['slug'] ]->get( 'Name' ) : $theme['slug'] ) )
+				)
+			);
+		}
 
-        ?>
+		?>
 
         <tr>
             <td><?php echo esc_html( $log['registered'] ); ?></td>
@@ -130,6 +130,7 @@ $logs = get_option( 'jqmh_logs', array() );
     </tr>
     </tfoot>
 </table>
+
 <div style="text-align:right;">
     <button type="button" class="button jqmh-clear-deprecation-notices button-default"><?php _e( 'Clear logs', 'enable-jquery-migrate-helper' ); ?></button>
 </div>
