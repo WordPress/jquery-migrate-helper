@@ -453,7 +453,15 @@ class jQuery_Migrate_Helper {
 
 		// Force show the admin notice if using a downgraded jQuery version.
 		if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
-		    return true;
+		    // Do not add this message to the plugins own admin page, it already has a permanent notice.
+			if ( 'tools_page_jqmh' !== get_current_screen()->id) {
+				return true;
+			}
+		}
+
+		// Normally only show this warning on the dashboard page.
+		if ( 'dashboard' !== get_current_screen()->id ) {
+		    return false;
 		}
 
 		// If the message has been dismissed, and it has been less than two weeks since it was seen,
@@ -529,9 +537,9 @@ class jQuery_Migrate_Helper {
 			return;
 		}
 
-		if ( get_current_screen()->id === 'dashboard' ) {
-			self::dashboard_notice();
+		self::dashboard_notice();
 
+		if ( get_current_screen()->id === 'dashboard' ) {
 			self::plugin_obsolete_message();
 		}
 
