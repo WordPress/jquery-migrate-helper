@@ -27,8 +27,8 @@ $public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging',
 			</th>
 			<td>
 				<select name="jquery-version" id="jquery-version">
-                    <option value="" <?php echo ( 'no' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Default from WordPress', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
-                    <option value="1" <?php echo ( 'yes' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Legacy 1.12.4-wp', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
+                    <option value="no" <?php echo ( 'no' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Default from WordPress', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
+                    <option value="yes" <?php echo ( 'yes' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Legacy 1.12.4-wp', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
                 </select>
 			</td>
 		</tr>

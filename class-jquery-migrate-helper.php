@@ -138,15 +138,13 @@ class jQuery_Migrate_Helper {
 	        return;
         }
 
-        $current_jquery = get_option( '_jquery_migrate_downgrade_version', 'no' );
-
 	    if ( isset( $_POST['live-deprecations'] ) ) {
 		    delete_option( '_jquery_migrate_deprecations_dismissed_notice' );
         } else {
 		    update_option( '_jquery_migrate_deprecations_dismissed_notice', time() );
         }
 
-	    if ( ! empty( $_POST['jquery-version'] ) && 'no' === $current_jquery ) {
+	    if ( 'yes' === $_POST['jquery-version'] ) {
 	        update_option( '_jquery_migrate_downgrade_version', 'yes' );
         } else {
 		    update_option( '_jquery_migrate_downgrade_version', 'no' );
