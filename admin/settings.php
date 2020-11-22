@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $downgraded = get_option( '_jquery_migrate_downgrade_version', 'no' );
 $show_deprecations = jQuery_Migrate_Helper::show_deprecated_scripts_notice();
+$public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging', 'no' );
 ?>
 
 <h2>Settings</h2>
@@ -41,6 +42,21 @@ $show_deprecations = jQuery_Migrate_Helper::show_deprecated_scripts_notice();
                     <input name="live-deprecations" type="checkbox" <?php checked( $show_deprecations ); ?>>
                     <?php _e( 'Show deprecation notices, on each admin page, as they happen', 'enable-jquery-migrate-helper' ); ?>
                 </label>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <?php _e( 'Public deprecation logging' ); ?>
+            </th>
+            <td>
+                <label>
+                    <input name="public-deprecation-logging" type="checkbox" <?php checked( 'yes' === $public_deprecations ); ?>>
+                    <?php _e( 'Log deprecations caused by anonymous users browsing your website', 'enable-jquery-migrate-helper' ); ?>
+                </label>
+                <p class="description">
+                    <?php _e( 'Caution: This option may lead to more deprecations being discovered, but could also be used to increase your database size. Use sparingly and under supervision.', 'enable-jquery-migrate-helper' ); ?>
+                </p>
             </td>
         </tr>
 	</table>

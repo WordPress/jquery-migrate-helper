@@ -39,6 +39,7 @@ class jQuery_Migrate_Helper {
 		add_action( 'admin_notices', array( __CLASS__, 'admin_notices' ) );
 		add_action( 'wp_ajax_jquery-migrate-dismiss-notice', array( __CLASS__, 'admin_notices_dismiss' ) );
 		add_action( 'wp_ajax_jquery-migrate-log-notice', array( __CLASS__, 'log_migrate_notice' ) );
+		add_action( 'wp_ajax_nopriv_jquery-migrate-log-notice', array( __CLASS__, 'log_migrate_notice' ) );
 
 		add_action( 'wp_ajax_jquery-migrate-downgrade-version', array( __CLASS__, 'downgrade_jquery_version' ) );
 
@@ -149,6 +150,12 @@ class jQuery_Migrate_Helper {
 	        update_option( '_jquery_migrate_downgrade_version', 'yes' );
         } else {
 		    update_option( '_jquery_migrate_downgrade_version', 'no' );
+        }
+
+	    if ( isset( $_POST['public-deprecation-logging'] ) ) {
+	        update_option( '_jquery_migrate_public_deprecation_logging', 'yes' );
+        } else {
+	        update_option( '_jquery_migrate_public_deprecation_logging', 'no' );
         }
     }
 
@@ -360,7 +367,7 @@ class jQuery_Migrate_Helper {
 
 	public static function enqueue_scripts_frontend() {
 		// Only load the asset for users who can act on them.
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) && 'no' === get_option( '_jquery_migrate_public_deprecation_logging', 'no' ) ) {
 			return;
 		}
 
@@ -551,7 +558,7 @@ class jQuery_Migrate_Helper {
 	}
 
 	public static function log_migrate_notice() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) && 'no' === get_option( '_jquery_migrate_public_deprecation_logging', 'no' ) ) {
 			status_header( 403 );
 			die();
 		}
