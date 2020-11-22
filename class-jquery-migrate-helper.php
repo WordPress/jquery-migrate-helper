@@ -431,6 +431,15 @@ class jQuery_Migrate_Helper {
             <p>
 				<?php _e( '* A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.', 'enable-jquery-migrate-helper' ); ?>
             </p>
+
+	        <?php if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
+                <p>
+                    <strong>
+				        <?php _e( 'This notice is permanent while using a legacy version of jQuery', 'enable-jquery-migrate-helper' ); ?>
+                    </strong>
+                </p>
+	        <?php endif; ?>
+
 			<?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
         </div>
 
@@ -441,6 +450,11 @@ class jQuery_Migrate_Helper {
 		// Show again in two weeks if the user has dismissed this notice.
 		$is_dismissed = get_option( '_jquery_migrate_dismissed_notice', false );
 		$recurrence   = 1 * WEEK_IN_SECONDS;
+
+		// Force show the admin notice if using a downgraded jQuery version.
+		if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
+		    return true;
+		}
 
 		// If the message has been dismissed, and it has been less than two weeks since it was seen,
 		// then skip showing the admin notice for now.
