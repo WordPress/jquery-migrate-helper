@@ -138,6 +138,8 @@ class jQuery_Migrate_Helper {
 	        return;
         }
 
+	    $previous_downgrade = get_option( '_jquery_migrate_downgrade_version', 'no' );
+
 	    if ( isset( $_POST['live-deprecations'] ) ) {
 		    delete_option( '_jquery_migrate_deprecations_dismissed_notice' );
         } else {
@@ -146,11 +148,14 @@ class jQuery_Migrate_Helper {
 
 	    if ( 'yes' === $_POST['jquery-version'] ) {
 	        update_option( '_jquery_migrate_downgrade_version', 'yes' );
-
-	        // Reset the deprecation logging of modern jQuery (if set) when changing between versions
-		    update_option( '_jquery_migrate_modern_deprecations', 'no' );
         } else {
 		    update_option( '_jquery_migrate_downgrade_version', 'no' );
+
+		    // Disable logging by default when enabling modern jQuery versions.
+		    if ( 'yes' === $previous_downgrade ) {
+			    update_option( '_jquery_migrate_modern_deprecations', 'no' );
+			    update_option( '_jquery_migrate_deprecations_dismissed_notice', time() );
+            }
         }
 
 	    if ( isset( $_POST['public-deprecation-logging'] ) ) {

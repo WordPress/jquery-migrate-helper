@@ -56,6 +56,9 @@ $log_modern_deprecations = get_option( '_jquery_migrate_modern_deprecations', 'n
                     <input name="modern-deprecations" type="checkbox" <?php checked( 'yes' === $log_modern_deprecations ); ?>>
 					<?php _e( 'Detect and log deprecations in the default WordPress version of jQuery', 'enable-jquery-migrate-helper' ); ?>
                 </label>
+                <p class="description">
+                    <?php _e( 'This may report many entries from WordPress it self. This is expected, as WordPress continues to update its own code in the upcoming releases.', 'enable-jquery-migrate-helper' ); ?>
+                </p>
             </td>
         </tr>
         <?php endif; ?>
