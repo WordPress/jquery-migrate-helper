@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<p>
 			<strong>
-				<?php _e( 'You are using a WordPress version prior to 5.5.1, this plugin also helps with a bug found in WordPress 5.5.0, you should update to version 5.5.1, or later, before the plugin is deactivated.', 'enable-jquery-migarte-helper' ); ?>
+				<?php _e( 'You are using a WordPress version prior to 5.5.1, this plugin also helps with a bug found in WordPress 5.5.0, you should update to version 5.5.1, or later, before deactivating the plugin.', 'enable-jquery-migrate-helper' ); ?>
 			</strong>
 		</p>
 
