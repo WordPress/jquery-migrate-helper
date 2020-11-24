@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
 		<p>
 			<strong>
-                <?php _e( 'You are currently using a legacy version of jQuery. It has no support and doesn’r receive security updates. Please upgrade as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
+                <?php _e( 'You are currently using a legacy version of jQuery. It has no support and doesn’t receive security updates. Please upgrade as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
 			</strong>
 		</p>
 	<?php endif; ?>
