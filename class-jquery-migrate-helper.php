@@ -74,7 +74,7 @@ class jQuery_Migrate_Helper {
 
 		$count = self::logged_migration_notice_count();
 
-		// Don't add extra maz<rkup if not needed.
+		// Don't add extra markup if not needed.
 		if ( $count < 1 ) {
 		    return;
         }
@@ -192,7 +192,7 @@ class jQuery_Migrate_Helper {
 			$result['status']      = 'critical';
 			$result['description'] = sprintf(
 				'<p>%s</p>',
-				__( 'Your site is using an legacy version of jQuery, version 1.12.4-wp, likely due to problems experienced with your plugins or themes after an update. Please reach out to the authors of your plugins and themes to ensure they are compatible with WordPress 5.6 or later.', 'enable-jquery-migrate-helper' )
+				__( 'Your site is using a legacy version of jQuery, 1.12.4-wp, probably in order to fix problems that were experienced with your plugins or themes after an update of WordPress. Please make sure that your plugins and themes become compatible with WordPress 5.6 by contacting the authors.', 'enable-jquery-migrate-helper' )
 			);
 			$result['actions']     = sprintf(
 				'<a href="%s">%s</a>',
@@ -210,7 +210,7 @@ class jQuery_Migrate_Helper {
 	public static function downgrade_jquery_version() {
 		/*
 		 * Only allow the downgrade to be triggered automatically by site visitors if an admin hasn't
-		 * changed the option them selves, at which point only an admin should be able to set the version.
+		 * changed the option themselves; in that case only an admin should be able to set the version.
 		 */
         $has_auto_downgraded = get_option( '_jquery_migrate_has_auto_downgraded', 'no' );
 		if ( 'no' !== $has_auto_downgraded ) {
@@ -257,7 +257,7 @@ class jQuery_Migrate_Helper {
 	 * know that it should serve future requests as a downgraded version of jQuery.
 	 *
 	 * Vanilla JavaScript is used here to remove all dependencies on libraries, even though they
-	 * all look very pretty, this ensures that code can run no matter the circumstance.
+	 * all look very pretty, this ensures that code can run no matter the circumstances.
 	 */
 	public static function fatal_error_handler() {
 		// If an auto-downgraded has already been performed, do not output the error handler.
@@ -332,7 +332,7 @@ class jQuery_Migrate_Helper {
 	/*
 	 * Enqueue jQuery migrate, and force it to be the development version.
 	 *
-	 * This will ensure that console errors are generated, and we can surface these to the
+	 * This will ensure that console errors are generated that we can surface to the
 	 * end user in a responsible manner so that they can update their plugins and theme,
 	 * or make a decision to switch to other plugin/theme if no updates are available.
 	 */
@@ -427,7 +427,8 @@ class jQuery_Migrate_Helper {
 
 		// Force show the admin notice if using a downgraded jQuery version.
 		if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
-		    // Do not add this message to the plugins own admin page, it already has a permanent notice.
+		    // Do not add this message to the plugins own admin page since it already contains
+		    // a permanent notice.
 			if ( 'tools_page_jqmh' !== get_current_screen()->id) {
 				return true;
 			}
@@ -459,8 +460,8 @@ class jQuery_Migrate_Helper {
 		$recurrence = 1 * WEEK_IN_SECONDS;
 
 		/*
-		 * If no log time is recorded, this is likely a recently installed or udpated plugin,set the value to now,
-		 * to give a buffer, and avoid showing the notice when we have no data telling if its needed or not.
+		 * If no log time is recorded, this is likely a recently installed or udpated plugin, set value to now,
+		 * to give a buffer, and avoid showing the notice when we have no data telling if it’s needed or not.
 		 */
 		if ( null === $last_log ) {
 			update_option( 'jqmh_last_log_time', time() );
@@ -582,8 +583,8 @@ class jQuery_Migrate_Helper {
 	 * Add this plugin to the admin bar as a menu item.
 	 *
 	 * This entry allows users to re-surface previously hidden notices from the plugin,
-	 * and also allows for alerting of issues detected in the frontend, where injecting
-	 * any notice isn't as elegant.
+	 * and also allows for alerting of issues detected in the frontend, where we avoid
+	 * notices.
 	 *
 	 * @param $wp_menu
 	 */
@@ -604,7 +605,7 @@ class jQuery_Migrate_Helper {
 					sprintf(
 						'<span class="count-wrapper jqmh-deprecations" style="' . ( $deprecation_count > 0 ? '' : 'display:none;' ) . '">%s</span>',
 						sprintf(
-						// translators: 1: The amount of existing issues. 2: Issues discovered on the currently loaded page.
+						// translators: 1: Total number of existing issues. 2: Issues discovered on currently loaded page.
 							__( '(Previously known: %1$d Discovered on this page: %2$s)', 'enable-jquery-migrate-helper' ),
 							$deprecation_count,
 							sprintf(
