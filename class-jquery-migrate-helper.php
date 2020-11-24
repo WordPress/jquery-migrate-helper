@@ -453,7 +453,7 @@ class jQuery_Migrate_Helper {
 		 * If no log time is recorded, this is likely a recently updated plugin, so set the value to now,
 		 * to give a buffer, and avoid showing the notice when we have no data telling if its needed or not.
 		 */
-		if ( null === $last_log ) {
+		if ( null === $last_log && self::logged_migration_notice_count() > 0 ) {
 			update_option( 'jqmh_last_log_time', time() );
 
 			return;
@@ -463,7 +463,7 @@ class jQuery_Migrate_Helper {
 			return;
 		}
 
-		include_once __DIR__ . '/templates/admin-notices/no-deprecations.php';
+		include_once __DIR__ . '/templates/admin-notices/no-longer-needed.php';
 	}
 
 	public static function admin_notices() {
@@ -473,10 +473,7 @@ class jQuery_Migrate_Helper {
 		}
 
 		self::dashboard_notice();
-
-		if ( get_current_screen()->id === 'dashboard' ) {
-			self::plugin_obsolete_message();
-		}
+		self::plugin_obsolete_message();
 
 		self::deprecated_scripts_notice();
 	}
