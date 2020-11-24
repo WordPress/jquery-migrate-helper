@@ -15,8 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<ol class="jquery-migrate-deprecation-list"></ol>
 
 	<p>
-		<?php _e( 'Please make sure you are using the latest version of all of your plugins, and your theme.', 'enable-jquery-migrate-helper' ); ?>
-		<?php _e( 'If you are, you may want to ask the developers of the code mentioned in the warnings for an update.', 'enable-jquery-migrate-helper' ); ?>
+		<?php _e( 'Please make sure you are using the latest version of all of your plugins, and your theme. If that is the case, then you may want to ask the developers of the code mentioned in your warnings to update it.', 'enable-jquery-migrate-helper' ); ?>
 	</p>
 
 	<?php wp_nonce_field( 'jquery-migrate-deprecation-list', 'jquery-migrate-deprecation-list-nonce', false ); ?>
