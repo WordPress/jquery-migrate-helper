@@ -204,6 +204,9 @@ class jQuery_Migrate_Helper {
 		return $result;
 	}
 
+	/**
+	 * Ajax handler for automatic downgrades.
+	 */
 	public static function downgrade_jquery_version() {
 		/*
 		 * Only allow the downgrade to be triggered automatically by site visitors if an admin hasn't
@@ -213,6 +216,10 @@ class jQuery_Migrate_Helper {
 		if ( 'no' !== $has_auto_downgraded ) {
 			return;
 		}
+
+        if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'jquery-migrate-automatic-downgrade' ) ) {
+            return;
+        }
 
 		// An array of functions that may trigger a jQuery Migrate downgrade.
 		$deprecated = array(
@@ -262,6 +269,8 @@ class jQuery_Migrate_Helper {
         <script type="text/javascript">
 			window.onerror = function( msg, url, line, col, error ) {
 				var xhr = new XMLHttpRequest();
+				var nonce = '<?php echo esc_js( wp_create_nonce( 'jquery-migrate-automatic-downgrade' ) ); ?>';
+
 				xhr.open( 'POST', '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>' );
 				xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
 				xhr.onload = function () {
@@ -284,7 +293,7 @@ class jQuery_Migrate_Helper {
                     }
 				};
 
-				xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&msg=' + msg ) );
+				xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&_wpnonce=' + nonce + '&msg=' + msg ) );
 
 				// Suppress error alerts in older browsers
 				return true;
