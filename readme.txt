@@ -1,5 +1,6 @@
 === Enable jQuery Migrate Helper ===
 Contributors: wordpressdotorg, clorith, azaozz
+Tags: jquery, javascript, update
 Requires at least: 5.4
 Tested up to: 5.5
 Stable tag: 1.1.0
@@ -9,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-With the update to WordPress 5.5, a migration tool known as `jquery-migrate` will no longer be enabled by default. This may lead to unexpected behaviors in some themes or plugins who run older code.
+With the update to WordPress 5.5, a migration tool known as `jquery-migrate` will no longer be enabled by default. This may lead to lacking functionnality or unexpected behavior in some themes or plugins that run older code.
 
 This plugin serves as a temporary solution, enabling the migration script for your site to give your plugin and theme authors some more time to update, and test, their code.
 
@@ -20,6 +21,9 @@ A script, a file, or some other piece of code is deprecated when its developers 
 
 = How do I find and use the browser console =
 WordPress.org has an article about [using the browsers console log to diagnose JavaScript errors](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/).
+
+= How do I know if I need this plugin, or not=
+If something isn’t working correctly on your site after you upgraded WordPress, then you can simply try installing and activating this plugin. If this helps, then you leave this plugin activated and follow the instructions in the plugin. The plugin will tell you when you don’t need it any more.
 
 == Installation ==
 
