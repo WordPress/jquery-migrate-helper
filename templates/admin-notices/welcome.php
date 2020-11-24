@@ -14,23 +14,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php _e( 'Right now you are using the Enable jQuery Migrate Helper plugin to enable support for old JavaScript code that uses deprecated functions in the jQuery JavaScript library.', 'enable-jquery-migrate-helper' ); ?>
 		<br>
 		<strong>
-			<?php _e( 'Please note that this is a temporary solution which will only work between WordPress 5.5.0 and 5.6.0 is, and is not meant as a permanent fix for unsupported code.', 'enable-jquery-migrate-helper' ); ?>
+			<?php _e( 'Please note that this is a temporary solution which will only work between WordPress 5.5.0 and 5.6.0. This is NOT meant as a permanent fix for unsupported code.', 'enable-jquery-migrate-helper' ); ?>
 		</strong>
 	</p>
 
 	<p>
-		<?php _e( 'If you get warnings, you should check the theme or plugin that generated them for an update. There will very likely be one you can install.', 'enable-jquery-migrate-helper' ); ?>
-		<?php _e( 'When you have updated your plugins and themes, and there are no more warnings, please deactivate Enable jQuery Migrate Helper.', 'enable-jquery-migrate-helper' ); ?>
+		<?php _e( 'If you get warnings, you should check for an updated version of the plugin or theme that generated the warning. There will very likely be one you can install. When you have updated your plugins and themes, and there are no more warnings, please deactivate Enable jQuery Migrate Helper.', 'enable-jquery-migrate-helper' ); ?>
 	</p>
 
 	<p>
-		<?php _e( '* A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.', 'enable-jquery-migrate-helper' ); ?>
+		<?php _e( '* A script, a file, or some other piece of code gets deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.', 'enable-jquery-migrate-helper' ); ?>
 	</p>
 
 	<?php if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
 		<p>
 			<strong>
-                <?php _e( 'You are currently using a legacy version of jQuery, which comes with no support or security updates, please look to upgrade as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
+                <?php _e( 'You are currently using a legacy version of jQuery. It has no support and doesn’t receive security updates. Please upgrade as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
 			</strong>
 		</p>
 	<?php endif; ?>
