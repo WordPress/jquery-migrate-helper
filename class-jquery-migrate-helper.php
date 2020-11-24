@@ -392,23 +392,8 @@ class jQuery_Migrate_Helper {
 		if ( ! self::show_deprecated_scripts_notice() ) {
 			return;
 		}
-		?>
 
-        <div class="notice notice-error is-dismissible jquery-migrate-dashboard-notice jquery-migrate-deprecation-notice <?php echo( empty( $logs ) ? 'hidden' : '' ); ?>" data-notice-id="jquery-migrate-deprecation-list">
-            <h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Warnings encountered', 'enable-jquery-migrate-helper' ); ?></h2>
-            <p><?php _e( 'This page generated the following warnings:', 'enable-jquery-migrate-helper' ); ?></p>
-
-            <ol class="jquery-migrate-deprecation-list"></ol>
-
-            <p>
-				<?php _e( 'Please make sure you are using the latest version of all of your plugins, and your theme.', 'enable-jquery-migrate-helper' ); ?>
-				<?php _e( 'If you are, you may want to ask the developers of the code mentioned in the warnings for an update.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-			<?php wp_nonce_field( 'jquery-migrate-deprecation-list', 'jquery-migrate-deprecation-list-nonce', false ); ?>
-        </div>
-
-		<?php
+		include_once __DIR__ . '/templates/admin-notices/deprecated-scripts.php';
 	}
 
 	public static function show_deprecated_scripts_notice() {
@@ -422,43 +407,8 @@ class jQuery_Migrate_Helper {
 		if ( ! self::show_dashboard_notice() ) {
 			return;
 		}
-		?>
 
-        <div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice" data-notice-id="jquery-migrate-notice">
-            <h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
-            <p>
-				<?php _e( 'Right now you are using the Enable jQuery Migrate Helper plugin to enable support for old JavaScript code that uses deprecated functions in the jQuery JavaScript library.', 'enable-jquery-migrate-helper' ); ?>
-                <br>
-                <strong>
-					<?php _e( 'Please note that this is a temporary solution which will only work between WordPress 5.5.0 and 5.6.0 is, and is not meant as a permanent fix for unsupported code.', 'enable-jquery-migrate-helper' ); ?>
-                </strong>
-            </p>
-
-            <p>
-				<?php _e( 'If you get warnings, you should check the theme or plugin that generated them for an update. There will very likely be one you can install.', 'enable-jquery-migrate-helper' ); ?>
-				<?php _e( 'When you have updated your plugins and themes, and there are no more warnings, please deactivate Enable jQuery Migrate Helper.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-            <p>
-				<?php _e( '* A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-	        <?php if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
-                <p>
-                    <strong>
-				        <?php _e( 'This notice is permanent while using a legacy version of jQuery', 'enable-jquery-migrate-helper' ); ?>
-                    </strong>
-                </p>
-	        <?php endif; ?>
-
-            <p>
-                <a href="<?php echo esc_url( admin_url( 'tools.php?page=jqmh' ) ); ?>"><?php _e( 'Plugin settings', 'enable-jquery-migrate-helper' ); ?></a> | <a href="<?php echo esc_url( admin_url( 'tools.php?page=jqmh&tab=logs' ) ); ?>"><?php _e( 'Logged deprecations', 'enable-jquery-migrate-helper' ); ?></a>
-            </p>
-
-			<?php wp_nonce_field( 'jquery-migrate-notice', 'jquery-migrate-notice-nonce', false ); ?>
-        </div>
-
-		<?php
+		include_once __DIR__ . '/templates/admin-notices/welcome.php';
 	}
 
 	public static function show_dashboard_notice() {
@@ -503,7 +453,7 @@ class jQuery_Migrate_Helper {
 		 * If no log time is recorded, this is likely a recently updated plugin, so set the value to now,
 		 * to give a buffer, and avoid showing the notice when we have no data telling if its needed or not.
 		 */
-		if ( null === $last_log || self::logged_migration_notice_count() > 0 ) {
+		if ( null === $last_log ) {
 			update_option( 'jqmh_last_log_time', time() );
 
 			return;
@@ -512,38 +462,8 @@ class jQuery_Migrate_Helper {
 		if ( $last_log > ( time() - $recurrence ) ) {
 			return;
 		}
-		?>
 
-        <div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice"
-             data-notice-id="jquery-migrate-no-deprecations-notice">
-            <h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
-
-            <p>
-				<?php _e( 'No deprecations have been logged on this site in a while, you may no longer need this plugin.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-            <p>
-				<?php _e( 'Please keep in mind that only notices on the public facing part of your site, or if you have disabled the display on the back end, will be logged and accounted for.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-            <p>
-				<?php _e( 'This means you should still check that things work as expected after the plugin is disabled, and if you know there have been warnings in the admin pages, you may still need to reach out to the plugin or theme authors affected.', 'enable-jquery-migrate-helper' ); ?>
-            </p>
-
-			<?php if ( is_wp_version_compatible( '5.5.1' ) ) : ?>
-
-                <p>
-                    <strong>
-						<?php _e( 'You are using a WordPress version prior to 5.5.1, this plugin also helps with a bug found in WordPress 5.5.0, you should update to version 5.5.1, or later, before the plugin is deactivated.', 'enable-jquery-migarte-helper' ); ?>
-                    </strong>
-                </p>
-
-			<?php endif; ?>
-
-			<?php wp_nonce_field( 'jquery-migrate-no-deprecations-notice', 'jquery-migrate-no-deprecations-notice-nonce', false ); ?>
-        </div>
-
-		<?php
+		include_once __DIR__ . '/templates/admin-notices/no-deprecations.php';
 	}
 
 	public static function admin_notices() {
