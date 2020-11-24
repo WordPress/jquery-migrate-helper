@@ -48,6 +48,19 @@ Deprecated notices means that there is a Migrate tool in place making sure these
 
 == Changelog ==
 
+= TBD =
+* Added settings page
+* Added option for downgrading to legacy jQuery
+* Added automatic downgrades
+* Added option to log deprecations in modern jQuery
+* Added e-mail notifications
+* Added weekly email digest of deprecations
+* Added option to allow logging deprecations from anonymous site visitors
+* Changed the  handling of inline JavaScript code causing deprecation notices
+* Changed the admin bar to be two fixed links to avoid ever changing contexts
+* Changed the admin notices to be persistent when using legacy jQuery after upgrading to WordPress 5.6
+* Fixed recommendation to remove plugin when not logging any deprecations having the wrong logic and not being displayed.
+
 = v 1.1.0 =
 * Added option to dismiss deprecation notices in backend
 * Added logging of deprecation notices in the front end
