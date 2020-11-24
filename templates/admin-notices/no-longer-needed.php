@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</p>
 
 	<p>
-		<?php _e( 'Please keep in mind that the log and the reports include errors encountered on the site admin pages (back end) only if you have disabled immediate display of errors in the back end.', 'enable-jquery-migrate-helper' ); ?>
+		<?php _e( 'Please note that not all jQuery deprecation notices are recorded in the log. Deprecation notices that occur on public pages (front end) are recorded. Notices from the admin pages (back end) are only recorded if the immediate deprecation notices in the admin bar are turned off. Also keep in mind that under WordPress 5.6 logging of depration notices are only logged if logging is specifically enabled by the user.', 'enable-jquery-migrate-helper' ); ?>
 	</p>
 
 	<p>
