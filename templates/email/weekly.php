@@ -28,14 +28,14 @@ $logs = get_option( 'jqmh_logs', array() );
 </p>
 
 <p>
-	<?php _e( 'This is a weekly summary of the warnings still present on your site, relating to the jQuery library, which should be addressed as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
+	<?php _e( 'This is a weekly summary of the warnings still present on your site, relating to the jQuery library. These errors should be addressed as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
 </p>
 
 <?php if ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
 
 <p>
 	<strong>
-		 <?php _e( 'Your site is running a legacy version of jQuery, modern functionality is not available to your plugins, themes or WordPress it self.', 'enable-jquery-migrate-helper' ); ?>
+		 <?php _e( 'Your site is running a legacy version of jQuery, modern functionality is currently not available to your plugins, themes or WordPress itself.', 'enable-jquery-migrate-helper' ); ?>
 	</strong>
 </p>
 
@@ -50,7 +50,7 @@ $logs = get_option( 'jqmh_logs', array() );
 <?php else : ?>
 
 <p>
-	<?php _e( 'The following are deprecations logged from the front-end of your site, or while live deprecation notices were disabled in the admin area.', 'enable-jquery-migrate-helper' ); ?>
+	<?php _e( 'The following deprecationshave been logged from the front-end of your site, or from your admin area while live deprecation notices were disabled.', 'enable-jquery-migrate-helper' ); ?>
 </p>
 
 <table style="background: #fff; border: 1px solid #ccd0d4;">
@@ -72,6 +72,7 @@ $logs = get_option( 'jqmh_logs', array() );
 		preg_match( '/\/themes\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $theme );
 
 		$notice = $log['notice'];
+		// Translators: Undetermined source
 		$source = __( 'Undetermined', 'enable-jquery-migrate-helper' );
 		$file   = __( 'Inline code, unknown file location', 'enable-jquery-migrate-helper' );
 
@@ -147,7 +148,7 @@ $logs = get_option( 'jqmh_logs', array() );
     <?php
     printf(
         // translators: 1: Link to deprecation log page.
-        __( 'You can view any captured, and logged, deprecations at %s', 'enable-jquery-migrate-helper' ),
+        __( 'You can view captured and logged deprecations at %s', 'enable-jquery-migrate-helper' ),
         admin_url( 'tools.php?page=jqmh&tab=logs' )
     );
     ?>
