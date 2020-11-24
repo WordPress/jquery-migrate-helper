@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="notice notice-error is-dismissible jquery-migrate-dashboard-notice jquery-migrate-deprecation-notice <?php echo( empty( $logs ) ? 'hidden' : '' ); ?>" data-notice-id="jquery-migrate-deprecation-list">
+<div class="notice notice-error is-dismissible jquery-migrate-dashboard-notice jquery-migrate-deprecation-notice hidden" data-notice-id="jquery-migrate-deprecation-list">
 	<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?> &mdash; <?php _ex( 'Warnings encountered', 'enable-jquery-migrate-helper' ); ?></h2>
 	<p><?php _e( 'This page generated the following warnings:', 'enable-jquery-migrate-helper' ); ?></p>
 
