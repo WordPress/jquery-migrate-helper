@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php _e( 'This means you should still check that things work as expected after the plugin is disabled, and if you know there have been warnings in the admin pages, you may still need to reach out to the plugin or theme authors affected.', 'enable-jquery-migrate-helper' ); ?>
 	</p>
 
-	<?php if ( is_wp_version_compatible( '5.5.1' ) ) : ?>
+	<?php if ( ! is_wp_version_compatible( '5.5.1' ) ) : ?>
 
 		<p>
 			<strong>
