@@ -14,18 +14,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 </p>
 
 <p>
-	<?php _e( 'This is a one-time, automated, message to let you know the jQuery version on your site has been automatically downgraded to the legacy 1.12.4-wp version.', 'enable-jquery-migrate-helper' ); ?>
+	<?php _e( 'This is a one-time, automated, message to inform you that the jQuery version on your site has been automatically downgraded to the legacy 1.12.4-wp version.', 'enable-jquery-migrate-helper' ); ?>
 </p>
 
 <p>
-	<?php _e( 'This happened because you, or a visitor to your site, viewed a page using one or more deprecated jQuery features which are no longer in use. As the feature being used is no longer maintained, this caused an error. To maintain the existing user experience, this automatic downgrade was performed..', 'enable-jquery-migrate-helper' ); ?>
+	<?php _e( 'This happened because you, or a visitor to your site, viewed a page that was using one or more deprecated jQuery features which are no longer in use. As the feature being used is no longer maintained, this caused an error. In order to maintain the expected user experience, this automatic downgrade was performed.', 'enable-jquery-migrate-helper' ); ?>
 </p>
 
 <p>
 	<?php
 	printf(
 		// translators: 1: Link to deprecation log page.
-		__( 'You can view any captured, and logged, deprecations at %s', 'enable-jquery-migrate-helper' ),
+		__( 'You can view captured and logged deprecations at %s', 'enable-jquery-migrate-helper' ),
 		admin_url( 'tools.php?page=jqmh&tab=logs' )
 	);
 	?>
