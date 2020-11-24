@@ -468,7 +468,7 @@ class jQuery_Migrate_Helper {
 
 	public static function admin_notices() {
 		// Show only to admins.
-		if ( ! current_user_can( 'update_plugins' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
