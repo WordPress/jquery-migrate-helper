@@ -188,16 +188,16 @@ class jQuery_Migrate_Helper {
 		$downgrade_state = get_option( '_jquery_migrate_downgrade_version', 'no' );
 
 		if ( 'no' !== $downgrade_state ) {
-			$result['label']       = __( 'You are using a downgraded version of jQuery', 'enable-jquery-migrate-helper' );
+			$result['label']       = __( 'You are using a legacy version of jQuery', 'enable-jquery-migrate-helper' );
 			$result['status']      = 'critical';
 			$result['description'] = sprintf(
 				'<p>%s</p>',
-				__( 'Your site is using an older version of jQuery, version 1.12.4-wp, likely due to problems experienced with your plugins or themes after an update. Please reach out to the authors of your plugins and themes to ensure they are compatible with WordPress 5.6 or later.', 'enable-jquery-migrate-helper' )
+				__( 'Your site is using an legacy version of jQuery, version 1.12.4-wp, likely due to problems experienced with your plugins or themes after an update. Please reach out to the authors of your plugins and themes to ensure they are compatible with WordPress 5.6 or later.', 'enable-jquery-migrate-helper' )
 			);
 			$result['actions']     = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( get_admin_url( null, '?jqmh-use-3' ) ),
-				__( 'Switch back to jQuery 3', 'enable-jquery-migrate-helper' )
+				esc_url( admin_url( 'tools.php?page=jqmh' ) ),
+				__( 'Plugin settings', 'enable-jquery-migrate-helper' )
 			);
 		}
 
