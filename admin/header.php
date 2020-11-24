@@ -15,19 +15,19 @@ $page = ( ! empty( $_GET['tab'] ) ? $_GET['tab'] : 'settings' );
 
 <div class="notice notice-info">
     <p>
-        jQuery is a framework that makes creating interactive elements on your website quick and easy for theme and plugin authors.
+        <?php _e( 'jQuery is a framework that makes creating interactive elements on your website quick and easy for theme and plugin authors.', 'enable-jquery-migrate-helper' ); ?>
     </p>
 
     <p>
-        Because of this versatility, WordPress has included a version of the jQuery library for a long time.
+        <?php _e( 'Thanks to this versatility, WordPress has included a version of the jQuery library for a long time.', 'enable-jquery-migrate-helper' ); ?>
     </p>
 
     <p>
-        Due to this inclusion, many plugins and themes have implemented features which are no longer maintained in jQuery, but the Migrate tool has put them back in, but only as a temporary solution.
+        <?php _e( 'Due to the large amount of plugins and themes using the library, the version has not received any major upgrades to avoid breaking changes. This has unfortunately led to many plugins and themes just using obsolete code (even when WordPress has allowed for more modern code to be used).', 'enable-jquery-migrate-helper' ); ?>
     </p>
 
     <p>
-        When WordPress removed this Migration tool, and when it upgraded the version of jQuery included, some themes and plugins stopped working, because their code was outdated.
+        <?php _e( 'When WordPress facilitated for, and is performing, upgrades of the version of jQuery included, some themes and plugins may stop working as expected, because their code was outdated.', 'enable-jquery-migrate-helper' ); ?>
     </p>
 </div>
 
