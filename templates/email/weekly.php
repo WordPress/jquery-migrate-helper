@@ -64,15 +64,6 @@ $logs = get_option( 'jqmh_logs', array() );
 		</tr>
 	</thead>
 
-	<tbody id="jqmh-logged-notices">
-	<?php if ( empty( $logs ) ) : ?>
-		<tr>
-			<td colspan="5">
-				<?php _e( 'No deprecations have been logged', 'enable-jquery-migrate-helper' ); ?>
-			</td>
-		</tr>
-	<?php endif; ?>
-
 	<?php
 	$odd = true;
 	foreach ( $logs as $log ) :
@@ -151,6 +142,16 @@ $logs = get_option( 'jqmh_logs', array() );
 		</tr>
 	</tfoot>
 </table>
+
+<p>
+    <?php
+    printf(
+        // translators: 1: Link to deprecation log page.
+        __( 'You can view any captured, and logged, deprecations at %s', 'enable-jquery-migrate-helper' ),
+        admin_url( 'tools.php?page=jqmh&tab=logs' )
+    );
+    ?>
+</p>
 
 <?php endif; ?>
 

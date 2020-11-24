@@ -59,18 +59,7 @@ class jQuery_Migrate_Helper {
 	 * Run the scheduled event ot send an email summary to the site admin.
 	 */
 	public static function scheduled_event_handler() {
-	    $recipient = get_bloginfo( 'admin_email' );
-	    $title = __( 'Weekly jQuery Migrate Status Update', 'enable-jquery-migrate-helper' );
-
-        ob_start();
-        include_once __DIR__ . '/templates/email/weekly.php';
-        $message = ob_get_clean();
-
-	    add_filter( 'wp_mail_content_type', function() {
-	        return 'text/html';
-        } );
-
-	    wp_mail( $recipient, $title, $message );
+        self::send_message( 'weekly' );
     }
 
 	/**
@@ -248,6 +237,8 @@ class jQuery_Migrate_Helper {
 
 		update_option( '_jquery_migrate_downgrade_version', 'yes' );
 		update_option( '_jquery_migrate_has_auto_downgraded', 'yes' );
+
+		self::send_message( 'automatic-downgrade' );
 
 		wp_send_json_success( array( 'reload' => true ) );
 	}
@@ -719,5 +710,60 @@ class jQuery_Migrate_Helper {
 				'href'   => get_admin_url( null, 'tools.php?page=jqmh&tab=logs' ),
 			)
 		);
+	}
+
+	/**
+     * Send a pre-defined email to the site admin.
+     *
+	 * @param string $template The template of the email to be sent.
+     * @return bool If the email was sent or not.
+	 */
+	private static function send_message( $template ) {
+	    $file = null;
+
+	    switch ( $template ) {
+            case 'weekly':
+	            $title = __( 'Weekly jQuery Migrate Status Update', 'enable-jquery-migrate-helper' );
+	            $file = 'weekly.php';
+                break;
+            case 'automatic-downgrade':
+                $title = __( 'Automatic jQuery version change', 'enable-jquery-migrate-helper' );
+                $file = 'automatic-downgrade.php';
+                break;
+	    }
+
+	    $file_path = __DIR__ . '/templates/email/' . $file;
+
+	    if ( ! $file || ! file_exists( $file_path ) ) {
+	        return false;
+	    }
+
+		$recipient = get_bloginfo( 'admin_email' );
+
+		ob_start();
+		include $file_path;
+		$message = ob_get_clean();
+
+		/**
+		 * Filter the contents of the notification email.
+         *
+         * If an empty value is returned, the email notice will not be sent.
+         *
+         * @since 1.2.0
+         *
+         * @param string $message  The message that will be sent ot the site admin.
+         * @param string $template The currently invoked email template.
+		 */
+		$message = apply_filters( 'jqmh_email_message', $message, $template );
+
+		if ( empty( $message ) ) {
+		    return false;
+		}
+
+		add_filter( 'wp_mail_content_type', function() {
+			return 'text/html';
+		} );
+
+		return wp_mail( $recipient, $title, $message );
 	}
 }
