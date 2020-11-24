@@ -113,7 +113,7 @@ jQuery( document ).ready( function( $ ) {
 	 * @param message
 	 */
 	function reportDeprecation( message ) {
-		// Do not write to the logfile if this is the backend, and the notices are written to the screen.
+		// Do not write to the logfile if this is the backend and the notices are written to the screen.
 		if ( JQMH.backend && notice.length ) {
 			return;
 		}
