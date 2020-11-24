@@ -356,7 +356,7 @@ class jQuery_Migrate_Helper {
 				'report_nonce'         => wp_create_nonce( 'jquery-migrate-report-deprecation' ),
 				'backend'              => is_admin(),
 				'plugin_slug'          => dirname( plugin_basename( __FILE__ ) ),
-				'capture_deprecations' => ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ), // Deprecation logging must be explicitly enabled for jQuery 3.5
+				'capture_deprecations' => ( 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) || 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ),
                 'single_instance_log'  => ( 'no' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ), // Only show one instance of deprecations in jQuery 3.5
 			)
 		);
