@@ -459,12 +459,11 @@ class jQuery_Migrate_Helper {
 		$recurrence = 1 * WEEK_IN_SECONDS;
 
 		/*
-		 * If no log time is recorded, this is likely a recently updated plugin, so set the value to now,
+		 * If no log time is recorded, this is likely a recently installed or udpated plugin,set the value to now,
 		 * to give a buffer, and avoid showing the notice when we have no data telling if its needed or not.
 		 */
-		if ( null === $last_log && self::logged_migration_notice_count() > 0 ) {
+		if ( null === $last_log ) {
 			update_option( 'jqmh_last_log_time', time() );
-
 			return;
 		}
 
