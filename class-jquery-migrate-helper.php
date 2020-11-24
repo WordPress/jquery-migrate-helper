@@ -135,7 +135,7 @@ class jQuery_Migrate_Helper {
 		    update_option( '_jquery_migrate_deprecations_dismissed_notice', time() );
         }
 
-	    if ( 'yes' === $_POST['jquery-version'] ) {
+	    if ( ! empty( $_POST['jquery-version'] ) && 'yes' === $_POST['jquery-version'] ) {
 	        update_option( '_jquery_migrate_downgrade_version', 'yes' );
         } else {
 		    update_option( '_jquery_migrate_downgrade_version', 'no' );

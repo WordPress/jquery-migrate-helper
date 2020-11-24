@@ -27,10 +27,15 @@ $log_modern_deprecations = get_option( '_jquery_migrate_modern_deprecations', 'n
                 </label>
 			</th>
 			<td>
-				<select name="jquery-version" id="jquery-version">
+				<select name="jquery-version" id="jquery-version" <?php echo ( ! is_wp_version_compatible( '5.6-alpha' ) ? 'disabled="disabled"' : '' ); ?>>
                     <option value="no" <?php echo ( 'no' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Default from WordPress', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
                     <option value="yes" <?php echo ( 'yes' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Legacy 1.12.4-wp', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
                 </select>
+				<?php if ( ! is_wp_version_compatible( '5.6-alpha' ) ) : ?>
+                <p class="description">
+                    <?php _e( 'You can only change jQuery versions in WordPress 5.6 or later', 'enable-jquery-migrate-helper' ); ?>
+                </p>
+                <?php endif; ?>
 			</td>
 		</tr>
 
