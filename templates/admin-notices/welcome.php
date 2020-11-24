@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div class="notice notice-warning is-dismissible jquery-migrate-dashboard-notice" data-notice-id="jquery-migrate-notice">
+<div class="notice <?php echo ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ? 'notice-error' : 'notice-warning is-dismissible' ); ?> jquery-migrate-dashboard-notice" data-notice-id="jquery-migrate-notice">
 	<h2><?php _ex( 'jQuery Migrate Helper', 'Admin notice header', 'enable-jquery-migrate-helper' ); ?></h2>
 	<p>
 		<?php _e( 'Right now you are using the Enable jQuery Migrate Helper plugin to enable support for old JavaScript code that uses deprecated functions in the jQuery JavaScript library.', 'enable-jquery-migrate-helper' ); ?>
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( 'no' !== get_option( '_jquery_migrate_downgrade_version', 'no' ) ) : ?>
 		<p>
 			<strong>
-				<?php _e( 'This notice is permanent while using a legacy version of jQuery', 'enable-jquery-migrate-helper' ); ?>
+                <?php _e( 'You are currently using a legacy version of jQuery, which comes with no support or security updates, please look to upgrade as soon as possible.', 'enable-jquery-migrate-helper' ); ?>
 			</strong>
 		</p>
 	<?php endif; ?>
