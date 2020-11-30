@@ -63,6 +63,7 @@ Deprecated notices means that there is a Migrate tool in place making sure these
 * Changed the  handling of inline JavaScript code causing deprecation notices
 * Changed the admin bar to be two fixed links to avoid ever changing contexts
 * Changed the admin notices to be persistent when using legacy jQuery after upgrading to WordPress 5.6
+* Changed how concatenation is disabled, to address public-facing performance concerns
 * Fixed recommendation to remove plugin when not logging any deprecations having the wrong logic and not being displayed.
 
 = v 1.1.0 =

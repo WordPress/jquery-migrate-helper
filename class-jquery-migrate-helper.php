@@ -13,12 +13,21 @@ class jQuery_Migrate_Helper {
 	private function __construct() {}
 
 	public static function init_actions() {
-		// To be able to replace the src, scripts should not be concatenated.
-		if ( ! defined( 'CONCATENATE_SCRIPTS' ) ) {
-			define( 'CONCATENATE_SCRIPTS', false );
-		}
+		$public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging', 'no' );
 
-		$GLOBALS['concatenate_scripts'] = false;
+		/*
+		 * To be able to replace the src, scripts should not be concatenated.
+		 *
+		 * Concatenation is only forcefully disabled if the user is logged in, or public deprecation logging
+		 * has been enabled, to reduce the performance impact of the plugin.
+		 */
+        if ( is_user_logged_in() || 'yes' === $public_deprecations ) {
+	        if ( ! defined( 'CONCATENATE_SCRIPTS' ) ) {
+		        define( 'CONCATENATE_SCRIPTS', false );
+	        }
+
+	        $GLOBALS['concatenate_scripts'] = false;
+        }
 
 		add_action( 'wp_default_scripts', array( __CLASS__, 'replace_scripts' ), -1 );
 
