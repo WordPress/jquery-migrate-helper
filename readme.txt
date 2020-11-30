@@ -52,7 +52,7 @@ Deprecated notices means that there is a Migrate tool in place making sure these
 
 == Changelog ==
 
-= TBD =
+= v 1.2.0 =
 * Added settings page
 * Added option for downgrading to legacy jQuery
 * Added automatic downgrades
