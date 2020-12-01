@@ -30,7 +30,7 @@ The plugin will let you downgrade to a previous version of jQuery for a period, 
 A script, a file, or some other piece of code is deprecated when its developers are in the process of replacing it with more modern code or removing it entirely.
 
 = What happens after WordPress 5.6 =
-With the release of WordPress 5.6, the jQuery version also gets updated. This means plugins or themes that previously caused deprecation warnings now instead will cause.
+With the release of WordPress 5.6, the jQuery version also gets updated. This means that plugins or themes that previously caused deprecation warnings now instead will cause errors.
 This plugin will allow you to, temporarily, return to the previous version of jQuery if this happens (it will also try to do so automatically for website visitors the first time an error happens) allowing you to fix the code, or replace it.
 
 = How do I find and use the browser console =
