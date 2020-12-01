@@ -50,7 +50,7 @@ $logs = get_option( 'jqmh_logs', array() );
 <?php else : ?>
 
 <p>
-	<?php _e( 'The following deprecationshave been logged from the front-end of your site, or from your admin area while live deprecation notices were disabled.', 'enable-jquery-migrate-helper' ); ?>
+	<?php _e( 'The following deprecations have been logged from the front-end of your site, or from your admin area while live deprecation notices were disabled.', 'enable-jquery-migrate-helper' ); ?>
 </p>
 
 <table style="background: #fff; border: 1px solid #ccd0d4;">
