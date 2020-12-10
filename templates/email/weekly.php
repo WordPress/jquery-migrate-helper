@@ -70,6 +70,7 @@ $logs = get_option( 'jqmh_logs', array() );
 
 		preg_match( '/\/plugins\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $plugin );
 		preg_match( '/\/themes\/(?P<slug>.+?)\/.+?: (?P<notice>.+)/', $log['notice'], $theme );
+		preg_match( '/\/wp-(admin|includes)\/.+?: (?P<notice>.+)/', $log['notice'], $core );
 
 		$notice = $log['notice'];
 		// Translators: Undetermined source
@@ -116,6 +117,12 @@ $logs = get_option( 'jqmh_logs', array() );
 					esc_html( ( isset( $themes[ $theme['slug'] ] ) ? $themes[ $theme['slug'] ]->get( 'Name' ) : $theme['slug'] ) )
 				)
 			);
+		} elseif ( ! empty( $core ) ) {
+			preg_match( '/(?P<path>https?:\/\/.+?):/', $log['notice'], $file );
+			$file = $file['path'];
+
+			$notice = $core['notice'];
+			$source = __( 'WordPress core', 'enable-jquery-migrate-helper' );
 		}
 
 		?>
