@@ -36,6 +36,11 @@ This plugin will allow you to, temporarily, return to the previous version of jQ
 = How do I find and use the browser console =
 WordPress.org has an article about [using the browsers console log to diagnose JavaScript errors](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/).
 
+= The plugin isn't logging deprecations or changing jQuery versions =
+If your site has any plugins for combining JavaScript files, or loading them asynchronously, this plugin may be negatively affected and not be able to operate as intended.
+
+If your site requires this plugin to operate, please disable any plugins which interact with the loading of JavaScript files such as the types mentioned above. Once the underlying issue has been resolved, you may remove this plugin and re-enable those other tools.
+
 = How do I know if I need this plugin, or not=
 If something isn’t working correctly on your site after you upgraded WordPress, then you can simply try installing and activating this plugin. If this helps, then you leave this plugin activated and follow the instructions in the plugin. The plugin will tell you when you don’t need it any more.
 
