@@ -362,12 +362,12 @@ class jQuery_Migrate_Helper {
 		$assets_url = plugins_url( 'js/', __FILE__ );
 
 		if ( version_compare( $GLOBALS['wp_version'], '5.6-alpha', '<' ) || 'yes' === get_option( '_jquery_migrate_downgrade_version', 'no' ) ) {
-			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-1.4.1-wp.js', array(), '1.4.1-wp' );
-			self::set_script( $scripts, 'jquery-core', $assets_url . 'jquery-1.12.4-wp.js', array(), '1.12.4-wp' );
+			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-1.4.1-wp.js', array(), '1.4.1-wp' );
+			self::set_script( $scripts, 'jquery-core', $assets_url . 'jquery/jquery-1.12.4-wp.js', array(), '1.12.4-wp' );
 			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
 		} else {
 			if ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ) {
-				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
+				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
 				self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
 			}
 		}
