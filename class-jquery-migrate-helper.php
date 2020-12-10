@@ -167,6 +167,12 @@ class jQuery_Migrate_Helper {
         } else {
 	        update_option( '_jquery_migrate_modern_deprecations', 'no' );
         }
+
+	    if ( isset( $_POST['automatic-downgrade'] ) ) {
+	        update_option( '_jquery_migrate_has_auto_downgraded', 'no' );
+        } else {
+	        update_option( '_jquery_migrate_has_auto_downgraded', 'yes' );
+        }
     }
 
 	public static function site_health_check( $tests ) {

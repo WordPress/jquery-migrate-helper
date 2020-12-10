@@ -11,6 +11,7 @@ $downgraded = get_option( '_jquery_migrate_downgrade_version', 'no' );
 $show_deprecations = jQuery_Migrate_Helper::show_deprecated_scripts_notice();
 $public_deprecations = get_option( '_jquery_migrate_public_deprecation_logging', 'no' );
 $log_modern_deprecations = get_option( '_jquery_migrate_modern_deprecations', 'no' );
+$has_auto_downgraded = get_option( '_jquery_migrate_has_auto_downgraded', 'no' );
 ?>
 
 <h2>Settings</h2>
@@ -50,6 +51,20 @@ $log_modern_deprecations = get_option( '_jquery_migrate_modern_deprecations', 'n
                 </label>
             </td>
         </tr>
+
+        <?php if ( 'no' === $downgraded && is_wp_version_compatible( '5.6-alpha' ) ) : ?>
+        <tr>
+            <th scope="row">
+                <?php _e( 'Automatic downgrades', 'enable-jquery-migrate-helper' ); ?>
+            </th>
+            <td>
+                <label>
+                    <input name="automatic-downgrade" type="checkbox" <?php checked( ( 'no' === $has_auto_downgraded ) ); ?>>
+                    <?php _e( 'Allow website visitors to trigger an automatic downgrading to legacy jQuery, when a failure is detected', 'enable-jquery-migrate-helper' ); ?>
+                </label>
+            </td>
+        </tr>
+        <?php endif; ?>
 
         <?php if ( 'no' === $downgraded && is_wp_version_compatible( '5.6-alpha' ) ) : ?>
         <tr>
