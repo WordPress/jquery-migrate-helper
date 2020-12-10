@@ -52,6 +52,14 @@ Deprecated notices means that the Migration tool is in place making sure these f
 
 == Changelog ==
 
+= v [TBD]] =
+* Added legacy jQuery IO to be loaded if legacy jQuery is in use.
+* Added mention of site URLs in automatic emails.
+* Added option to enable/disable automatic downgrades.
+* Added logic to ensure only one downgrade request is sent per page load.
+* Updated logic around automatic downgrades for improved performance.
+* Fixed core deprecation notices being incorrectly labeled as undetermined inline ones.
+
 = v 1.2.0 =
 * Added settings page
 * Added option for downgrading to legacy jQuery
