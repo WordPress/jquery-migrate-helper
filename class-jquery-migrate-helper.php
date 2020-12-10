@@ -236,27 +236,6 @@ class jQuery_Migrate_Helper {
             return;
         }
 
-		// An array of functions that may trigger a jQuery Migrate downgrade.
-		$deprecated = array(
-			'andSelf',
-            'browser',
-            'live',
-            'boxModel',
-            'support.boxModel',
-            'size',
-            'swap',
-            'clean',
-            'sub',
-		);
-
-		preg_match( '/\)\.(?<function>.+?) is not a function/si', $_POST['msg'], $regex_match );
-		$function = ( isset( $regex_match['function'] ) ? $regex_match['function'] : null );
-
-		// If no function was detected, or it was not an acknowledged deprecated feature, do not downgrade.
-		if ( null === $function || ! in_array( $function, $deprecated ) ) {
-			return;
-		}
-
 		update_option( '_jquery_migrate_downgrade_version', 'yes' );
 		update_option( '_jquery_migrate_has_auto_downgraded', 'yes' );
 
@@ -282,9 +261,37 @@ class jQuery_Migrate_Helper {
 		?>
 
         <script type="text/javascript">
+            var jQueryMigrateHelperHasSentDowngrade = false;
+
 			window.onerror = function( msg, url, line, col, error ) {
+				// Break out early, do not processing if a downgrade reqeust was already sent.
+				if ( jQueryMigrateHelperHasSentDowngrade ) {
+					return true;
+                }
+
 				var xhr = new XMLHttpRequest();
 				var nonce = '<?php echo esc_js( wp_create_nonce( 'jquery-migrate-automatic-downgrade' ) ); ?>';
+				var jQueryFunctions = [
+					'andSelf',
+					'browser',
+					'live',
+					'boxModel',
+					'support.boxModel',
+					'size',
+					'swap',
+					'clean',
+					'sub',
+                ];
+				var match_pattern = /\)\.(.+?) is not a function/;
+                var erroredFunction = msg.match( match_pattern );
+
+                // If there was no matching functions, do not try to downgrade.
+                if ( typeof erroredFunction !== 'object' || typeof erroredFunction[1] === "undefined" || -1 === jQueryFunctions.indexOf( erroredFunction[1] ) ) {
+                    return true;
+                }
+
+                // Set that we've now attempted a downgrade request.
+                jQueryMigrateHelperHasSentDowngrade = true;
 
 				xhr.open( 'POST', '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>' );
 				xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
@@ -308,7 +315,7 @@ class jQuery_Migrate_Helper {
                     }
 				};
 
-				xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&_wpnonce=' + nonce + '&msg=' + msg ) );
+				xhr.send( encodeURI( 'action=jquery-migrate-downgrade-version&_wpnonce=' + nonce ) );
 
 				// Suppress error alerts in older browsers
 				return true;
