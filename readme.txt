@@ -3,7 +3,7 @@ Contributors: wordpressdotorg, clorith, azaozz
 Tags: jquery, javascript, update
 Requires at least: 5.4
 Tested up to: 5.6
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,7 +57,7 @@ Deprecated notices means that the Migration tool is in place making sure these f
 
 == Changelog ==
 
-= v [TBD] =
+= v 1.3.0 =
 * Added legacy jQuery UI to be loaded if legacy jQuery is in use.
 * Added mention of site URLs in automatic emails.
 * Added option to enable/disable automatic downgrades.
