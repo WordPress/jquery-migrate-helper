@@ -365,6 +365,51 @@ class jQuery_Migrate_Helper {
 			self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-1.4.1-wp.js', array(), '1.4.1-wp' );
 			self::set_script( $scripts, 'jquery-core', $assets_url . 'jquery/jquery-1.12.4-wp.js', array(), '1.12.4-wp' );
 			self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '1.12.4-wp' );
+
+			// All the jQuery UI stuff comes here.
+//            self::set_script( $scripts, '', $assets_url . 'jquery-ui/', array(), '' );
+			self::set_script( $scripts, 'jquery-ui-core', $assets_url . 'jquery-ui/core.min.js', array( 'jquery' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-core', $assets_url . 'jquery-ui/effect.min.js', array( 'jquery' ), '1.11.4-wp', 1 );
+
+			self::set_script( $scripts, 'jquery-effects-blind', $assets_url . 'jquery-ui/effect-blind.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-bounce', $assets_url . 'jquery-ui/effect-bounce.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-clip', $assets_url . 'jquery-ui/effect-clip.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-drop', $assets_url . 'jquery-ui/effect-drop.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-explode', $assets_url . 'jquery-ui/effect-explode.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-fade', $assets_url . 'jquery-ui/effect-fade.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-fold', $assets_url . 'jquery-ui/effect-fold.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-highlight', $assets_url . 'jquery-ui/effect-highlight.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-puff', $assets_url . 'jquery-ui/effect-puff.min.js', array( 'jquery-effects-core', 'jquery-effects-scale' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-pulsate', $assets_url . 'jquery-ui/effect-pulsate.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-scale', $assets_url . 'jquery-ui/effect-scale.min.js', array( 'jquery-effects-core', 'jquery-effects-size' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-shake', $assets_url . 'jquery-ui/effect-shake.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-size', $assets_url . 'jquery-ui/effect-size.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-slide', $assets_url . 'jquery-ui/effect-slide.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-effects-transfer', $assets_url . 'jquery-ui/effect-transfer.min.js', array( 'jquery-effects-core' ), '1.11.4-wp', 1 );
+
+			self::set_script( $scripts, 'jquery-ui-accordion', $assets_url . 'jquery-ui/accordion.min.js', array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-autocomplete', $assets_url . 'jquery-ui/autocomplete.min.js', array( 'jquery-ui-menu', 'wp-a11y' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-button', $assets_url . 'jquery-ui/button.min.js', array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-datepicker', $assets_url . 'jquery-ui/datepicker.min.js', array( 'jquery-ui-core' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-dialog', $assets_url . 'jquery-ui/dialog.min.js', array( 'jquery-ui-resizable', 'jquery-ui-draggable', 'jquery-ui-button', 'jquery-ui-position' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-draggable', $assets_url . 'jquery-ui/draggable.min.js', array( 'jquery-ui-mouse' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-droppable', $assets_url . 'jquery-ui/droppable.min.js', array( 'jquery-ui-draggable' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-menu', $assets_url . 'jquery-ui/menu.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-mouse', $assets_url . 'jquery-ui/mouse.min.js', array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-position', $assets_url . 'jquery-ui/position.min.js', array( 'jquery' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-progressbar', $assets_url . 'jquery-ui/progressbar.min.js', array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-resizable', $assets_url . 'jquery-ui/resizable.min.js', array( 'jquery-ui-mouse' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-selectable', $assets_url . 'jquery-ui/selectable.min.js', array( 'jquery-ui-mouse' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-selectmenu', $assets_url . 'jquery-ui/selectmenu.min.js', array( 'jquery-ui-menu' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-slider', $assets_url . 'jquery-ui/slider.min.js', array( 'jquery-ui-mouse' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-sortable', $assets_url . 'jquery-ui/sortable.min.js', array( 'jquery-ui-mouse' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-spinner', $assets_url . 'jquery-ui/spinner.min.js', array( 'jquery-ui-button' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-tabs', $assets_url . 'jquery-ui/tabs.min.js', array( 'jquery-ui-core', 'jquery-ui-widget' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-tooltip', $assets_url . 'jquery-ui/tooltip.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ), '1.11.4-wp', 1 );
+			self::set_script( $scripts, 'jquery-ui-widget', $assets_url . 'jquery-ui/widget.min.js', array( 'jquery' ), '1.11.4-wp', 1 );
+
+			// This just updates the dependency of `jquery-touch-punch`.
+            self::set_script( $scripts, 'jquery-touch-punch', false, array( 'jquery-ui-widget', 'jquery-ui-mouse' ), '0.2.2', 1 );
 		} else {
 			if ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ) {
 				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
