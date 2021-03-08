@@ -2,7 +2,7 @@
 Contributors: wordpressdotorg, clorith, azaozz
 Tags: jquery, javascript, update
 Requires at least: 5.4
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: 1.3.0
 Requires PHP: 5.6
 License: GPLv2 or later
