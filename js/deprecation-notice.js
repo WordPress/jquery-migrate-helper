@@ -30,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 			if (
 				! match &&
 				line.indexOf( '/' + JQMH.plugin_slug + '/js' ) === -1 &&
-				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 || line.indexOf( '/wp-admin/js/' ) > -1 )
+				( line.indexOf( '/plugins/' ) > -1 || line.indexOf( '/themes/' ) > -1 || line.indexOf( '/wp-admin/js/' ) > -1 || line.indexOf( '/wp-includes/js/' ) > -1 )
 			) {
 				match = line.replace( /.*?http/, 'http' );
 			}
