@@ -286,7 +286,7 @@ class jQuery_Migrate_Helper {
                 var erroredFunction = msg.match( match_pattern );
 
                 // If there was no matching functions, do not try to downgrade.
-                if ( typeof erroredFunction !== 'object' || typeof erroredFunction[1] === "undefined" || -1 === jQueryFunctions.indexOf( erroredFunction[1] ) ) {
+                if ( null === erroredFunction || typeof erroredFunction !== 'object' || typeof erroredFunction[1] === "undefined" || -1 === jQueryFunctions.indexOf( erroredFunction[1] ) ) {
                     return true;
                 }
 
