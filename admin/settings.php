@@ -28,9 +28,10 @@ $has_auto_downgraded = get_option( '_jquery_migrate_has_auto_downgraded', 'no' )
                 </label>
 			</th>
 			<td>
-				<select name="jquery-version" id="jquery-version" <?php echo ( ! is_wp_version_compatible( '5.6-alpha' ) ? 'disabled="disabled"' : '' ); ?>>
-                    <option value="no" <?php echo ( 'no' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Default from WordPress', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
-                    <option value="yes" <?php echo ( 'yes' === $downgraded ? 'selected="selected"' : '' ); ?>><?php _ex( 'Legacy 1.12.4-wp', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
+                <select name="jquery-version" id="jquery-version" <?php echo ( ! is_wp_version_compatible( '5.6-alpha' ) ? 'disabled="disabled"' : '' ); ?>>
+                    <option value="no" <?php selected( $downgraded, 'no') ?>><?php
+						_ex( 'Default from WordPress', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
+                    <option value="yes" <?php selected( $downgraded, 'yes') ?>><?php _ex( 'Legacy 1.12.4-wp', 'jQuery version', 'enable-jquery-migrate-helper' ); ?></option>
                 </select>
 				<?php if ( ! is_wp_version_compatible( '5.6-alpha' ) ) : ?>
                 <p class="description">
