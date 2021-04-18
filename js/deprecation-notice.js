@@ -132,7 +132,7 @@ jQuery( document ).ready( function( $ ) {
 
 		$.post( {
 			url: JQMH.ajaxurl,
-			data
+			data: data
 		} );
 	}
 
