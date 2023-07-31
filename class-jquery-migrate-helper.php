@@ -412,8 +412,8 @@ class jQuery_Migrate_Helper {
             self::set_script( $scripts, 'jquery-touch-punch', false, array( 'jquery-ui-widget', 'jquery-ui-mouse' ), '0.2.2', 1 );
 		} else {
 			if ( 'yes' === get_option( '_jquery_migrate_modern_deprecations', 'no' ) ) {
-				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-3.3.2-wp.js', array(), '3.3.2-wp' );
-				self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.5.1-wp' );
+				self::set_script( $scripts, 'jquery-migrate', $assets_url . 'jquery-migrate/jquery-migrate-3.4.1-wp.js', array(), '3.4.1-wp' );
+				self::set_script( $scripts, 'jquery', false, array( 'jquery-core', 'jquery-migrate' ), '3.6.4-wp' );
 			}
 		}
 	}
