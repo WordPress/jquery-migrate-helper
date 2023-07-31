@@ -58,7 +58,11 @@ Deprecated notices means that the Migration tool is in place making sure these f
 == Changelog ==
 
 = v 1.4.0 (2023-07-31) =
-*
+* Fixed a bug where an empty error text would cause the plugin scripts from working properly.
+* Improved how inline scripts are detected and logged when applicable.
+* Improved logging to also capture deprecations within WordPress core.
+* Changed variable declarations for front-end scripts to use `var` instead of `const` and `let`, to improve compatibility for sites servicing older clients.
+* Updated the (modern) bundled jQuery Migrate script to match what is shipped with WordPress core.
 
 = v 1.3.0 =
 * Added legacy jQuery UI to be loaded if legacy jQuery is in use.
