@@ -34,6 +34,16 @@ jQuery( document ).ready( function( $ ) {
 			) {
 				match = line.replace( /.*?http/, 'http' );
 			}
+
+			// If no match is found, we do a second pass, and attempt to extrapolate special
+			// cases where the script may be within anonymous functions, and thus has no asset relationship.
+			if (
+				! match &&
+				line.indexOf( '/' + JQMH.plugin_slug + '/js' ) === -1 &&
+				line.indexOf( 'anonymous' ) > -1
+			) {
+				match = line.replace( /.*?http/, 'http' );
+			}
 		} );
 
 		// If the stack trace did not contain a matching plugin or theme, just return a null value.

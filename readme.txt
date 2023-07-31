@@ -57,6 +57,9 @@ Deprecated notices means that the Migration tool is in place making sure these f
 
 == Changelog ==
 
+= v 1.4.0 (2023-07-31) =
+*
+
 = v 1.3.0 =
 * Added legacy jQuery UI to be loaded if legacy jQuery is in use.
 * Added mention of site URLs in automatic emails.
