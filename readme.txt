@@ -57,6 +57,11 @@ Deprecated notices means that the Migration tool is in place making sure these f
 
 == Changelog ==
 
+= v 1.4.1 (2024-12-25) =
+- Update jQuery version reference to match WordPress core.
+- Tested on latest WordPress core release.
+- Added some more urgency to the weekly reminder email if outdated jQuery versions are used, as they may not include the latest security patches.
+
 = v 1.4.0 (2023-07-31) =
 * Fixed a bug where an empty error text would cause the plugin scripts from working properly.
 * Improved how inline scripts are detected and logged when applicable.
